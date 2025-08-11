@@ -17,73 +17,60 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import backend_gnr.backend_gnr.Articulo.model.ArticuloDTOGet;
-import backend_gnr.backend_gnr.Articulo.service.ArticuloService;
-import backend_gnr.backend_gnr.Excepciones.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate.Param;
 
-import backend_gnr.backend_gnr.Articulo.model.Articulo;
-import backend_gnr.backend_gnr.Articulo.repository.ArticuloRepository;
-import backend_gnr.backend_gnr.Caja.model.Caja;
-import backend_gnr.backend_gnr.Caja.repository.CajaRepository;
-import backend_gnr.backend_gnr.Cliente.model.Cliente;
-import backend_gnr.backend_gnr.Cliente.model.TipoCliente;
-import backend_gnr.backend_gnr.Cliente.repository.ClienteRepository;
-import backend_gnr.backend_gnr.CodigoPostalZona.models.CodigoPostalZona;
-import backend_gnr.backend_gnr.CodigoPostalZona.repository.CodigoPostalZonaRepository;
-import backend_gnr.backend_gnr.Correo.CorreoService;
-import backend_gnr.backend_gnr.Cotizacion.model.Cotizacion;
-import backend_gnr.backend_gnr.Cotizacion.repository.CotizacionRepository;
-import backend_gnr.backend_gnr.Cotizacion.service.CotizacionService;
-import backend_gnr.backend_gnr.CuponDescuento.model.CuponDescuento;
-import backend_gnr.backend_gnr.CuponDescuento.repository.CuponDescuentoRepository;
-import backend_gnr.backend_gnr.Datos.models.DatosTransferencia;
-import backend_gnr.backend_gnr.Datos.repository.DatosTransferenciaRepository;
-import backend_gnr.backend_gnr.DetallePedido.model.DetallePedido;
-import backend_gnr.backend_gnr.DetallePedido.model.DetallePedidoDTOPost;
-import backend_gnr.backend_gnr.DetallePedido.repository.DetallePedidoRepository;
-import backend_gnr.backend_gnr.Direccion.model.Direccion;
-import backend_gnr.backend_gnr.Direccion.service.DireccionService;
-import backend_gnr.backend_gnr.Envio.models.ArmarEnvio;
-import backend_gnr.backend_gnr.Envio.models.ArmarEnvioConCosto;
-import backend_gnr.backend_gnr.Envio.models.ArticuloItem;
-import backend_gnr.backend_gnr.Envio.models.DTOCotizarEnvio;
-import backend_gnr.backend_gnr.Envio.models.Envio;
-import backend_gnr.backend_gnr.Envio.models.EnvioConDatos;
-import backend_gnr.backend_gnr.Envio.service.CotizarEnvioService;
-import backend_gnr.backend_gnr.Estados.CambioEstado.model.CambioEstado;
-import backend_gnr.backend_gnr.Estados.CambioEstado.repository.CambioEstadoRepository;
-import backend_gnr.backend_gnr.Estados.Estado.model.EstadoDTOGet;
-import backend_gnr.backend_gnr.Estados.Estado.repository.EstadoRepository;
-import backend_gnr.backend_gnr.Estados.EstadoPedido.model.EstadoPedido;
-import backend_gnr.backend_gnr.Estados.EstadoPedido.model.PedidoCancelado;
-import backend_gnr.backend_gnr.Estados.EstadoPedido.model.PedidoCreado;
-import backend_gnr.backend_gnr.Estados.EstadoPedido.model.PedidoEnPreparacion;
-import backend_gnr.backend_gnr.Estados.EstadoPedido.model.PedidoPendienteDePago;
-import backend_gnr.backend_gnr.Estados.EstadoPedido.model.PedidoRechazado;
-import backend_gnr.backend_gnr.Nave.models.ResponsePago;
-import backend_gnr.backend_gnr.Nave.service.NaveService;
-import backend_gnr.backend_gnr.Pago.model.Pago;
-import backend_gnr.backend_gnr.Pago.model.TipoPago;
-import backend_gnr.backend_gnr.Pago.service.PagoService;
-import backend_gnr.backend_gnr.Parametros.model.ListaPrecioMayorista;
-import backend_gnr.backend_gnr.Parametros.model.ListaPrecioMinorista;
-import backend_gnr.backend_gnr.Parametros.model.Parametro;
-import backend_gnr.backend_gnr.Parametros.repository.ParametroRepository;
-import backend_gnr.backend_gnr.Pedido.model.EstadosGetDTO;
-import backend_gnr.backend_gnr.Pedido.model.Pedido;
-import backend_gnr.backend_gnr.Pedido.model.PedidoConPago;
-import backend_gnr.backend_gnr.Pedido.model.PedidoDTOGet;
-import backend_gnr.backend_gnr.Pedido.model.PedidoDTOGetADMIN;
-import backend_gnr.backend_gnr.Pedido.model.PedidoDTOPost;
-import backend_gnr.backend_gnr.Pedido.model.TipoEnvio;
-import backend_gnr.backend_gnr.Pedido.repository.PedidoRepository;
-import backend_gnr.backend_gnr.Usuario.model.Usuario;
-import backend_gnr.backend_gnr.Usuario.repository.UsuarioRepository;
-import io.micrometer.core.instrument.config.validate.Validated.Invalid;
+import easycommerce.easycommerce.Articulo.DTOs.ArticuloDTOGet;
+import easycommerce.easycommerce.Articulo.Model.Articulo;
+import easycommerce.easycommerce.Articulo.Repository.ArticuloRepository;
+import easycommerce.easycommerce.Articulo.Service.ArticuloService;
+import easycommerce.easycommerce.Caja.Repository.CajaRepository;
+import easycommerce.easycommerce.Cliente.Model.Cliente;
+import easycommerce.easycommerce.Cliente.Model.TipoCliente;
+import easycommerce.easycommerce.Cliente.Repository.ClienteRepository;
+import easycommerce.easycommerce.CodigoPostalZona.Repository.CodigoPostalZonaRepository;
+import easycommerce.easycommerce.Correo.CorreoService;
+import easycommerce.easycommerce.Cotizacion.Model.Cotizacion;
+import easycommerce.easycommerce.Cotizacion.Repository.CotizacionRepository;
+import easycommerce.easycommerce.Cotizacion.Service.CotizacionService;
+import easycommerce.easycommerce.CuponDescuento.Model.CuponDescuento;
+import easycommerce.easycommerce.CuponDescuento.Repository.CuponDescuentoRepository;
+import easycommerce.easycommerce.Datos.Model.DatosTransferencia;
+import easycommerce.easycommerce.Datos.Repository.DatosTransferenciaRepository;
+import easycommerce.easycommerce.DetallePedido.DTOs.DetallePedidoDTOPost;
+import easycommerce.easycommerce.DetallePedido.Model.DetallePedido;
+import easycommerce.easycommerce.DetallePedido.Repository.DetallePedidoRepository;
+import easycommerce.easycommerce.Direccion.Model.Direccion;
+import easycommerce.easycommerce.Direccion.Service.DireccionService;
+import easycommerce.easycommerce.Envio.Service.CotizarEnvioService;
+import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
+import easycommerce.easycommerce.Estados.CambioEstado.Repository.CambioEstadoRepository;
+import easycommerce.easycommerce.Estados.Estado.Repository.EstadoRepository;
+import easycommerce.easycommerce.Estados.EstadoPedido.Model.EstadoPedido;
+import easycommerce.easycommerce.Estados.EstadoPedido.Model.PedidoCreado;
+import easycommerce.easycommerce.Estados.EstadoPedido.Model.PedidoEnPreparacion;
+import easycommerce.easycommerce.Estados.EstadoPedido.Model.PedidoPendienteDePago;
+import easycommerce.easycommerce.Estados.EstadoPedido.Model.PedidoRechazado;
+import easycommerce.easycommerce.Excepciones.NoSuchElementException;
+import easycommerce.easycommerce.Excepciones.OutOfStockException;
+import easycommerce.easycommerce.Excepciones.QuotationNotFoundException;
+import easycommerce.easycommerce.Pago.Model.Pago;
+import easycommerce.easycommerce.Pago.Model.TipoPago;
+import easycommerce.easycommerce.Pago.Service.PagoService;
+import easycommerce.easycommerce.Parametros.Model.ListaPrecioMinorista;
+import easycommerce.easycommerce.Parametros.Repository.ParametroRepository;
+import easycommerce.easycommerce.Pedido.DTOs.EstadosGetDTO;
+import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOGet;
+import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOGetADMIN;
+import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOPost;
+import easycommerce.easycommerce.Pedido.Model.Pedido;
+import easycommerce.easycommerce.Pedido.Model.PedidoConPago;
+import easycommerce.easycommerce.Pedido.Model.TipoEnvio;
+import easycommerce.easycommerce.Pedido.Repository.PedidoRepository;
+import easycommerce.easycommerce.Usuario.Model.Usuario;
+import easycommerce.easycommerce.Usuario.Repository.UsuarioRepository;
 
 @Service
 public class PedidoServiceIMPL implements PedidoService {
@@ -98,23 +85,17 @@ public class PedidoServiceIMPL implements PedidoService {
     private final EstadoRepository estadoRepository;
     private final CorreoService correoService;
     private final DireccionService direccionService;
-    private final NaveService naveService;
     private final DatosTransferenciaRepository datosTransferenciaRepository;
-    private final CotizarEnvioService cotizarEnvioService;
-    private final CajaRepository cajaRepository;
     private final UsuarioRepository usuarioRepository;
     private final ParametroRepository parametroRepository;
-    private final CodigoPostalZonaRepository codigoPostalZonaRepository;
     private final CuponDescuentoRepository cuponDescuentoRepository;
     private final ArticuloService articuloService;
     public PedidoServiceIMPL(PedidoRepository pedidoRepository, ArticuloRepository articuloRepository,
             ClienteRepository clienteRepository, DetallePedidoRepository detallePedidoRepository,
             CotizacionRepository cotizacionRepository, CotizacionService cotizacionService, PagoService pagoService,
             CambioEstadoRepository cambioEstadoRepository, EstadoRepository estadoRepository,
-            CorreoService correoService, DireccionService direccionService, NaveService naveService,
-            DatosTransferenciaRepository datosTransferenciaRepository, CotizarEnvioService cotizarEnvioService,
-            CajaRepository cajaRepository, UsuarioRepository usuarioRepository, ParametroRepository parametroRepository,
-            CodigoPostalZonaRepository codigoPostalZonaRepository, CuponDescuentoRepository cuponDescuentoRepository,
+            CorreoService correoService, DireccionService direccionService, DatosTransferenciaRepository datosTransferenciaRepository, UsuarioRepository usuarioRepository, ParametroRepository parametroRepository,
+            CuponDescuentoRepository cuponDescuentoRepository,
             ArticuloService articuloService) {
                 this.articuloService = articuloService;
         this.pedidoRepository = pedidoRepository;
@@ -128,13 +109,9 @@ public class PedidoServiceIMPL implements PedidoService {
         this.estadoRepository = estadoRepository;
         this.correoService = correoService;
         this.direccionService = direccionService;
-        this.naveService = naveService;
         this.datosTransferenciaRepository = datosTransferenciaRepository;
-        this.cotizarEnvioService = cotizarEnvioService;
-        this.cajaRepository = cajaRepository;
         this.usuarioRepository = usuarioRepository;
         this.parametroRepository = parametroRepository;
-        this.codigoPostalZonaRepository = codigoPostalZonaRepository;
         this.cuponDescuentoRepository = cuponDescuentoRepository;
     }
 
@@ -147,7 +124,7 @@ public class PedidoServiceIMPL implements PedidoService {
             Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
             .filter(CambioEstado::esActual)
             .findFirst();
-            PedidoDTOGetADMIN pedidoDTO = new PedidoDTOGetADMIN(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(),pedido.getPago(), pedido.getTipoEnvio(),pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get(), pedido.getPrecioDolar(), pedido.getListaCliente());
+            PedidoDTOGetADMIN pedidoDTO = new PedidoDTOGetADMIN(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(), pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), ultimoCE.get(), pedido.getPrecioDolar(), pedido.getListaCliente());
             pedidosAMostrar.add(pedidoDTO);
         }
         return pedidosAMostrar;
@@ -278,7 +255,7 @@ public class PedidoServiceIMPL implements PedidoService {
         .map(Optional::get)
         .collect(Collectors.toList());
         // 4. Obtener cotización USD
-    Cotizacion cotizacion = cotizacionRepository.findByMoneda("USD")
+        Cotizacion cotizacion = cotizacionRepository.findByMoneda("USD")
         .orElseGet(() -> {
             try {
                 return cotizacionService.obtenerCotizacion("USD");
@@ -304,7 +281,7 @@ public class PedidoServiceIMPL implements PedidoService {
     .atZone(ZoneId.of("America/Argentina/Buenos_Aires"))
     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-pedidoAGuardar.setPrecioDolar("Valor Dolar al momento de la compra: " 
+    pedidoAGuardar.setPrecioDolar("Valor Dolar al momento de la compra: " 
     + cotizacion.getPrecioVenta().toString() 
     + " ARS a la fecha - " 
     + fecha);
@@ -386,7 +363,7 @@ pedidoAGuardar.setPrecioDolar("Valor Dolar al momento de la compra: "
         pedidoAGuardar = pedidoRepository.save(pedidoAGuardar);
 
         TipoEnvio tipoEnvio = TipoEnvio.fromCodigo(pedido.tipoEnvio());
-        if(tipoEnvio == TipoEnvio.ENVIOADOMICILIO){
+        /*if(tipoEnvio == TipoEnvio.ENVIOADOMICILIO){
             DTOCotizarEnvio dtoCotizar = new DTOCotizarEnvio(pedido.detalles(), pedido.cuponDescuento(), pedido.cliente().codigoPostal(), pedido.cliente().ciudad());
             EnvioConDatos armadoEnvio = cotizarEnvioService.cotizarEnvio(dtoCotizar, username);
             if(armadoEnvio.costoEnvio() != BigDecimal.ZERO){
@@ -396,7 +373,7 @@ pedidoAGuardar.setPrecioDolar("Valor Dolar al momento de la compra: "
                     envioGeneral = envioGeneralBd.get();
                 }
                 else{
-                    envioGeneral.setId(Long.valueOf(99999999L));
+                   envioGeneral.setId(Long.valueOf(99999999L));
                     envioGeneral.setNombre("ENVIO GENERAL");
                 }
                 DetallePedido detallePedidoEnvioGeneral = new DetallePedido();
@@ -408,10 +385,10 @@ pedidoAGuardar.setPrecioDolar("Valor Dolar al momento de la compra: "
             
             List<Envio> envios  = new ArrayList<>();
             for (ArmarEnvioConCosto bulto : armadoEnvio.bultos()) {
-                Envio envio = new Envio();
+               Envio envio = new Envio();
                 List<Articulo> articulosEnvio = new ArrayList<>();
                 for (ArticuloItem articulo : bulto.articulosAEmpaquetar()) {
-                    articulosEnvio.add(articulo.articulo());
+                 articulosEnvio.add(articulo.articulo());
                 }
                 envio.setArticulos(articulosEnvio);
                 envio.setCostoEnvio(bulto.costoBulto());
@@ -421,6 +398,8 @@ pedidoAGuardar.setPrecioDolar("Valor Dolar al momento de la compra: "
             
             pedidoAGuardar.setEnvios(envios);
         }
+            */
+
         //De acuerdo con la forma de pago elegida creo un pago estableciendo como tipo de pago lo que selecciono el cliente
         TipoPago tipoPago = TipoPago.fromCodigo(pedido.formaPago());
         switch(tipoPago){
@@ -440,7 +419,7 @@ pedidoAGuardar.setPrecioDolar("Valor Dolar al momento de la compra: "
                 pagoTransferencia = pagoService.save(pagoTransferencia);
                 pedidoAGuardar.setPago(pagoTransferencia);
                 break;
-            case NAVE:
+            /*case NAVE:
                 ResponsePago responsePago = naveService.generarIntencionDePago(pedidoAGuardar, pedido.esCelular());
                 pedidoConPago.setResponsePago(responsePago);
                 Pago pagoNave = new Pago();
@@ -450,11 +429,12 @@ pedidoAGuardar.setPrecioDolar("Valor Dolar al momento de la compra: "
                 pagoNave.setCodigoTransaccion(responsePago.getData().getTransaction_id());
                 pagoNave.setLinkDePago(responsePago.getData().getCheckout_url());
                 pedidoAGuardar.setPago(pagoNave);
+            */
         }
 
         //De acuerdo al tipo de envio le establezco un nuevo estado
         switch(tipoEnvio){
-            case ENVIOADOMICILIO:
+            /*case ENVIOADOMICILIO:
                 PedidoPendienteDePago pendienteDePago = new PedidoPendienteDePago();
                 pendienteDePago.setDescripcion("Pedido Pendiente De Pago");
                 List<String> estadoPosiblePendientePago = new ArrayList<>();
@@ -477,6 +457,7 @@ pedidoAGuardar.setPrecioDolar("Valor Dolar al momento de la compra: "
                 pedidoAGuardar.setCambiosEstado(ce);
                 pedidoAGuardar.setEstadoActual(pendienteDePago);
                 pedidoAGuardar.setTipoEnvio(tipoEnvio);
+            */
                 
             case RETIROENLOCAL:
                 if(pedidoAGuardar.getPago().getTipoPago() == TipoPago.EFECTIVO){
@@ -497,7 +478,8 @@ pedidoAGuardar.setPrecioDolar("Valor Dolar al momento de la compra: "
                     pedidoAGuardar.setTipoEnvio(tipoEnvio);
                     break;
                 }
-                if(pedidoAGuardar.getPago().getTipoPago() == TipoPago.NAVE || pedidoAGuardar.getPago().getTipoPago() == TipoPago.TRANSFERENCIA){
+
+                if(pedidoAGuardar.getPago().getTipoPago() == TipoPago.TRANSFERENCIA){
                     PedidoPendienteDePago pendienteDePagoRetiroLocal = new PedidoPendienteDePago();
                     pendienteDePagoRetiroLocal.setDescripcion("Pedido Pendiente De Pago");
                     List<String> estadosPosiblesPendientePagoNave = new ArrayList<>();
@@ -508,7 +490,7 @@ pedidoAGuardar.setPrecioDolar("Valor Dolar al momento de la compra: "
                     CambioEstado cambioEstadoPendienteDePagoRetiroLocal = new CambioEstado();
                     cambioEstadoPendienteDePagoRetiroLocal.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
                     cambioEstadoPendienteDePagoRetiroLocal.setEstado(pendienteDePagoRetiroLocal);
-                    if(pedidoAGuardar.getPago().getTipoPago() == TipoPago.NAVE){
+                    /*if(pedidoAGuardar.getPago().getTipoPago() == TipoPago.NAVE){
                         String descripcionPendienteDePagoRetiroLocal = "Si aun no se realizo un pago ingrese a: " + pedidoConPago.getResponsePago().getData().getCheckout_url();
                         cambioEstadoPendienteDePagoRetiroLocal.setDescripcion(descripcionPendienteDePagoRetiroLocal);
                     }
@@ -516,7 +498,9 @@ pedidoAGuardar.setPrecioDolar("Valor Dolar al momento de la compra: "
                         String descripcionPendienteDePagoRetiroLocal = "CBU: " + pedidoAGuardar.getPago().getDatosTransferencia().getCbu() + "\n" + "ALIAS: " + pedidoAGuardar.getPago().getDatosTransferencia().getAlias() + "\n" + "TITULAR DE LA CUENTA: " + pedidoAGuardar.getPago().getDatosTransferencia().getTitular() + "\n" + "BANCO: " + pedidoAGuardar.getPago().getDatosTransferencia().getBanco();
                         cambioEstadoPendienteDePagoRetiroLocal.setDescripcion(descripcionPendienteDePagoRetiroLocal);  
                     }
-                    
+                    */
+                    String descripcionPendienteDePagoRetiroLocal = "CBU: " + pedidoAGuardar.getPago().getDatosTransferencia().getCbu() + "\n" + "ALIAS: " + pedidoAGuardar.getPago().getDatosTransferencia().getAlias() + "\n" + "TITULAR DE LA CUENTA: " + pedidoAGuardar.getPago().getDatosTransferencia().getTitular() + "\n" + "BANCO: " + pedidoAGuardar.getPago().getDatosTransferencia().getBanco();
+                        cambioEstadoPendienteDePagoRetiroLocal.setDescripcion(descripcionPendienteDePagoRetiroLocal);  
                     ce.add(cambioEstadoPendienteDePagoRetiroLocal);
                     pedidoAGuardar.setCambiosEstado(ce);
                     pedidoAGuardar.setEstadoActual(pendienteDePagoRetiroLocal);
@@ -661,7 +645,7 @@ pedidoAGuardar.setPrecioDolar("Valor Dolar al momento de la compra: "
         return pedidoAMostrar;
     }
 
-    @Override
+    /*@Override
     public PedidoDTOGet pedidoDespachado(Pedido pedido) throws Exception {
         List<CambioEstado> ce = cambioEstadoRepository.saveAll(pedido.getCambiosEstado());
         EstadoPedido estadoActual = estadoRepository.save(pedido.getEstadoActual());
@@ -675,6 +659,7 @@ pedidoAGuardar.setPrecioDolar("Valor Dolar al momento de la compra: "
         PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get());
         return pedidoAMostrar;
     }
+    */
 
     @Override
     public PedidoDTOGet pedidoEntregado(Pedido pedido) throws Exception {

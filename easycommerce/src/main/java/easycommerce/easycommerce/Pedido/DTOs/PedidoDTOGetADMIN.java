@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import easycommerce.easycommerce.Cliente.Model.Cliente;
 import easycommerce.easycommerce.DetallePedido.Model.DetallePedido;
-import easycommerce.easycommerce.Envio.Model.Envio;
 import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
 import easycommerce.easycommerce.Estados.EstadoPedido.Model.EstadoPedido;
 import easycommerce.easycommerce.Pago.Model.Pago;
@@ -25,7 +24,6 @@ public record PedidoDTOGetADMIN(
     Pago pago,
     TipoEnvio tipoEnvio,
     EstadoPedido estadoActual,
-    List<Envio> envios,
     CambioEstado cambiosEstado,
     String precioDolar,
     String listaCliente){

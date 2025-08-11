@@ -9,8 +9,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import easycommerce.easycommerce.Cliente.Model.Cliente;
 import easycommerce.easycommerce.DetallePedido.Model.DetallePedido;
 import easycommerce.easycommerce.Direccion.Model.Direccion;
+import easycommerce.easycommerce.Envio.Model.Envio;
 import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
 import easycommerce.easycommerce.Estados.EstadoPedido.Model.EstadoPedido;
+import easycommerce.easycommerce.Pago.Model.Pago;
 import easycommerce.easycommerce.Pago.Model.TipoPago;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -59,7 +61,7 @@ public class Pedido {
     @JoinColumn(name = "estadoId")
     private EstadoPedido estadoActual;
     @Enumerated(EnumType.STRING)
-    private TipoPago tipoEnvio;
+    private TipoEnvio tipoEnvio;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "direccionId")
     private Direccion direccion;

@@ -5,15 +5,13 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import backend_gnr.backend_gnr.Excepciones.NoSuchElementException;
-import backend_gnr.backend_gnr.Excepciones.OutOfStockException;
-import backend_gnr.backend_gnr.Excepciones.QuotationNotFoundException;
-import backend_gnr.backend_gnr.Pedido.model.EstadosGetDTO;
-import backend_gnr.backend_gnr.Pedido.model.Pedido;
-import backend_gnr.backend_gnr.Pedido.model.PedidoConPago;
-import backend_gnr.backend_gnr.Pedido.model.PedidoDTOGet;
-import backend_gnr.backend_gnr.Pedido.model.PedidoDTOGetADMIN;
-import backend_gnr.backend_gnr.Pedido.model.PedidoDTOPost;
+import easycommerce.easycommerce.Excepciones.NoSuchElementException;
+import easycommerce.easycommerce.Excepciones.OutOfStockException;
+import easycommerce.easycommerce.Excepciones.QuotationNotFoundException;
+import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOGet;
+import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOGetADMIN;
+import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOPost;
+import easycommerce.easycommerce.Pedido.Model.Pedido;
 import jakarta.mail.MessagingException;
 
 public interface PedidoService {
@@ -28,7 +26,7 @@ public interface PedidoService {
     PedidoDTOGet pedidoPagado(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
     PedidoDTOGet pedidoEnPreparacion(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
     PedidoDTOGet pedidoListoParaEntregar(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
-    PedidoDTOGet pedidoDespachado(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
+    //PedidoDTOGet pedidoDespachado(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
     PedidoDTOGet pedidoEntregado(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
     PedidoDTOGet pedidoCancelado(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
     PedidoDTOGet pedidoRechazado(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
