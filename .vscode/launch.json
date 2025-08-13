@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-EasycommerceApplication<easycommerce>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "easycommerce.easycommerce.EasycommerceApplication",
+            "projectName": "easycommerce",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
