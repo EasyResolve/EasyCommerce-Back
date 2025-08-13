@@ -7,8 +7,7 @@ import java.util.List;
 
 import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
 import easycommerce.easycommerce.Excepciones.InvalidStateChangeException;
-import backend_gnr.backend_gnr.Pedido.model.Pedido;
-import backend_gnr.backend_gnr.Pedido.model.TipoEnvio;
+import easycommerce.easycommerce.Pedido.Model.Pedido;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 

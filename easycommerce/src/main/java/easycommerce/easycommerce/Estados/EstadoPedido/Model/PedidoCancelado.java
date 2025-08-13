@@ -3,8 +3,8 @@ package easycommerce.easycommerce.Estados.EstadoPedido.Model;
 import java.util.List;
 
 import easycommerce.easycommerce.Excepciones.InvalidStateChangeException;
+import easycommerce.easycommerce.Pedido.Model.Pedido;
 import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
-import backend_gnr.backend_gnr.Pedido.model.Pedido;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -27,10 +27,10 @@ public class PedidoCancelado extends EstadoPedido {
         throw new InvalidStateChangeException("El pedido ya se encuentra cancelado");
     }
 
-    @Override
-    public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
-        throw new InvalidStateChangeException("El pedido ya se encuentra cancelado");
-    }
+    // @Override
+    // public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
+    //     throw new InvalidStateChangeException("El pedido ya se encuentra cancelado");
+    // }
 
     @Override
     public Pedido pedidoEnPreparacion(Pedido pedido, List<CambioEstado> ce) throws Exception {

@@ -5,12 +5,11 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import backend_gnr.backend_gnr.Datos.models.DatosTransferencia;
-import backend_gnr.backend_gnr.Estados.CambioEstado.model.CambioEstado;
-import backend_gnr.backend_gnr.Excepciones.InvalidStateChangeException;
-import backend_gnr.backend_gnr.Pago.model.TipoPago;
-import backend_gnr.backend_gnr.Pedido.model.Pedido;
-import backend_gnr.backend_gnr.Pedido.model.TipoEnvio;
+import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
+import easycommerce.easycommerce.Excepciones.InvalidStateChangeException;
+import easycommerce.easycommerce.Pago.Model.TipoPago;
+import easycommerce.easycommerce.Pedido.Model.Pedido;
+import easycommerce.easycommerce.Pedido.Model.TipoEnvio;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -46,10 +45,10 @@ public class PedidoListoParaEntregar extends EstadoPedido {
         throw new InvalidStateChangeException("El pedido ya se encuentra creado correctamente");
     }
 
-    @Override
-    public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
-        throw new InvalidStateChangeException("No se puede despachar un pedido que esta listo para entregar en tienda");
-    }
+    // @Override
+    // public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
+    //     throw new InvalidStateChangeException("No se puede despachar un pedido que esta listo para entregar en tienda");
+    // }
 
     @Override
     public Pedido pedidoEnPreparacion(Pedido pedido, List<CambioEstado> ce) throws Exception {

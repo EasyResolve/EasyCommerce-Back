@@ -5,8 +5,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import easycommerce.easycommerce.Estados.Estado.Model.Estado;
+import easycommerce.easycommerce.Pedido.Model.Pedido;
 import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
-import backend_gnr.backend_gnr.Pedido.model.Pedido;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
@@ -58,10 +58,10 @@ public class EstadoPedido extends Estado {
         throw new Exception();
     }
 
-    @Override
-    public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
-        throw new Exception();
-    }
+    // @Override
+    // public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
+    //     throw new Exception();
+    // }
 
     @Override
     public Pedido pedidoEnPreparacion(Pedido pedido, List<CambioEstado> ce) throws Exception {

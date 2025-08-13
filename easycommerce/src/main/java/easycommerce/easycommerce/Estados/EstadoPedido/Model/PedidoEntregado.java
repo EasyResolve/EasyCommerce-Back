@@ -1,10 +1,10 @@
-package backend_gnr.backend_gnr.Estados.EstadoPedido.model;
+package easycommerce.easycommerce.Estados.EstadoPedido.Model;
 
 import java.util.List;
 
-import backend_gnr.backend_gnr.Estados.CambioEstado.model.CambioEstado;
-import backend_gnr.backend_gnr.Excepciones.InvalidStateChangeException;
-import backend_gnr.backend_gnr.Pedido.model.Pedido;
+import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
+import easycommerce.easycommerce.Excepciones.InvalidStateChangeException;
+import easycommerce.easycommerce.Pedido.Model.Pedido;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -27,10 +27,10 @@ public class PedidoEntregado extends EstadoPedido {
         throw new InvalidStateChangeException("No se puede crear un pedido ya entregado");
     }
 
-    @Override
-    public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
-        throw new InvalidStateChangeException("No se puede despachar un pedido que ya fue entregado");
-    }
+    // @Override
+    // public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
+    //     throw new InvalidStateChangeException("No se puede despachar un pedido que ya fue entregado");
+    // }
 
     @Override
     public Pedido pedidoEnPreparacion(Pedido pedido, List<CambioEstado> ce) throws Exception {

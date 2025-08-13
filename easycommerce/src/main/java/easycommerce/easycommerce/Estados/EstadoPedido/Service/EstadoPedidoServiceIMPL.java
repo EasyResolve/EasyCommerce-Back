@@ -1,12 +1,13 @@
-package backend_gnr.backend_gnr.Estados.EstadoPedido.service;
+package easycommerce.easycommerce.Estados.EstadoPedido.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import backend_gnr.backend_gnr.Estados.EstadoPedido.model.EstadoPedido;
-import backend_gnr.backend_gnr.Estados.EstadoPedido.repository.EstadoPedidoRepository;
+import easycommerce.easycommerce.Estados.EstadoPedido.Model.EstadoPedido;
+import easycommerce.easycommerce.Estados.EstadoPedido.Repository.EstadoPedidoRepository;
+
 
 @Service
 public class EstadoPedidoServiceIMPL implements EstadoPedidoService {

@@ -5,12 +5,11 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import backend_gnr.backend_gnr.Cliente.model.TipoCliente;
-import backend_gnr.backend_gnr.Estados.CambioEstado.model.CambioEstado;
-import backend_gnr.backend_gnr.Excepciones.InvalidStateChangeException;
-import backend_gnr.backend_gnr.Pago.model.TipoPago;
-import backend_gnr.backend_gnr.Pedido.model.Pedido;
-import backend_gnr.backend_gnr.Pedido.model.TipoEnvio;
+import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
+import easycommerce.easycommerce.Excepciones.InvalidStateChangeException;
+import easycommerce.easycommerce.Pago.Model.TipoPago;
+import easycommerce.easycommerce.Pedido.Model.Pedido;
+import easycommerce.easycommerce.Pedido.Model.TipoEnvio;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -46,10 +45,10 @@ public class PedidoPagado extends EstadoPedido {
         throw new InvalidStateChangeException("El pedido ya se encuentra creado correctamente");
     }
 
-    @Override
-    public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
-        throw new InvalidStateChangeException("No se puede despachar un pedido que todavia no se preparo");
-    }
+    // @Override
+    // public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
+    //     throw new InvalidStateChangeException("No se puede despachar un pedido que todavia no se preparo");
+    // }
 
     @Override
     public Pedido pedidoEnPreparacion(Pedido pedido, List<CambioEstado> ce) throws Exception {
@@ -60,15 +59,12 @@ public class PedidoPagado extends EstadoPedido {
             List<String> estadosPosibles = new ArrayList<>();
             CambioEstado cambioEstado = new CambioEstado();
             cambioEstado.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
-            if(pedido.getTipoEnvio() == TipoEnvio.ENVIOADOMICILIO){
-                estadosPosibles.add("despachado");
-                cambioEstado.setDescripcion("El pedido esta siendo preparado para despacharlo por nuestro operadores");
-            }
-            else{
-                estadosPosibles.add("listoParaEntregar");
-                cambioEstado.setDescripcion("El pedido esta siendo preparado por nuestro operadores");
-                
-            }
+            // if(pedido.getTipoEnvio() == TipoEnvio.ENVIOADOMICILIO){
+            //     estadosPosibles.add("despachado");
+            //     cambioEstado.setDescripcion("El pedido esta siendo preparado para despacharlo por nuestro operadores");
+            // }
+            estadosPosibles.add("listoParaEntregar");
+            cambioEstado.setDescripcion("El pedido esta siendo preparado por nuestro operadores");
             estadosPosibles.add("rechazado");
             estadosPosibles.add("cancelado");
             enPreparacion.setEstadosPosibles(estadosPosibles);

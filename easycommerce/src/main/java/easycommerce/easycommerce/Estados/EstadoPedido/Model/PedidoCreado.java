@@ -7,10 +7,10 @@ import java.util.List;
 
 
 import easycommerce.easycommerce.Excepciones.InvalidStateChangeException;
+import easycommerce.easycommerce.Pago.Model.TipoPago;
+import easycommerce.easycommerce.Pedido.Model.Pedido;
+import easycommerce.easycommerce.Pedido.Model.TipoEnvio;
 import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
-import backend_gnr.backend_gnr.Pago.model.TipoPago;
-import backend_gnr.backend_gnr.Pedido.model.Pedido;
-import backend_gnr.backend_gnr.Pedido.model.TipoEnvio;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -33,10 +33,10 @@ public class PedidoCreado extends EstadoPedido{
         throw new InvalidStateChangeException("El pedido se encuentra actualmente en estado creado");
     }
 
-    @Override
-    public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
-        throw new InvalidStateChangeException("No se puede despachar un pedido que todavia no fue preparado");
-    }
+    // @Override
+    // public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
+    //     throw new InvalidStateChangeException("No se puede despachar un pedido que todavia no fue preparado");
+    // }
 
     @Override
     public Pedido pedidoEnPreparacion(Pedido pedido, List<CambioEstado> ce) throws Exception {

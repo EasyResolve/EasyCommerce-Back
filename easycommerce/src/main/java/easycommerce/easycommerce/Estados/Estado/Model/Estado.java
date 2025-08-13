@@ -5,9 +5,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
-import easycommerce.easycommerce.Excepciones.InvalidStateChangeException;
-import backend_gnr.backend_gnr.Pago.model.Pago;
-import backend_gnr.backend_gnr.Pedido.model.Pedido;
+import easycommerce.easycommerce.Pago.Model.Pago;
+import easycommerce.easycommerce.Pedido.Model.Pedido;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

@@ -5,13 +5,13 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import backend_gnr.backend_gnr.Envio.models.Envio;
-import backend_gnr.backend_gnr.Estados.CambioEstado.model.CambioEstado;
-import backend_gnr.backend_gnr.Excepciones.InvalidStateChangeException;
-import backend_gnr.backend_gnr.Excepciones.NoSuchElementException;
-import backend_gnr.backend_gnr.Pago.model.TipoPago;
-import backend_gnr.backend_gnr.Pedido.model.Pedido;
-import backend_gnr.backend_gnr.Pedido.model.TipoEnvio;
+import easycommerce.easycommerce.Envio.Model.Envio;
+import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
+import easycommerce.easycommerce.Excepciones.InvalidStateChangeException;
+import easycommerce.easycommerce.Excepciones.NoSuchElementException;
+import easycommerce.easycommerce.Pago.Model.TipoPago;
+import easycommerce.easycommerce.Pedido.Model.Pedido;
+import easycommerce.easycommerce.Pedido.Model.TipoEnvio;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -47,42 +47,42 @@ public class PedidoEnPreparacion extends EstadoPedido {
         throw new InvalidStateChangeException("El pedido ya se encuentra creado correctamente");
     }
 
-    @Override
-    public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigosSeguimiento) throws Exception {
-        if(pedido.getTipoEnvio() == TipoEnvio.ENVIOADOMICILIO){
-            finalizarCE(ce);
-            PedidoDespachado despachado = new PedidoDespachado();
-            despachado.setDescripcion("Pedido Despachado");
-            List<String> estadosPosibles = new ArrayList<>();
-            estadosPosibles.add("entregado");
-            despachado.setEstadosPosibles(estadosPosibles);
-            CambioEstado cambioEstado = new CambioEstado();
-            cambioEstado.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
-            String descripcion = "";
+    // @Override
+    // public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigosSeguimiento) throws Exception {
+    //     if(pedido.getTipoEnvio() == TipoEnvio.ENVIOADOMICILIO){
+    //         finalizarCE(ce);
+    //         PedidoDespachado despachado = new PedidoDespachado();
+    //         despachado.setDescripcion("Pedido Despachado");
+    //         List<String> estadosPosibles = new ArrayList<>();
+    //         estadosPosibles.add("entregado");
+    //         despachado.setEstadosPosibles(estadosPosibles);
+    //         CambioEstado cambioEstado = new CambioEstado();
+    //         cambioEstado.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
+    //         String descripcion = "";
             
-            if(!codigosSeguimiento.isEmpty()){
-                String codigoSeguimiento = codigosSeguimiento;
-                for (Envio envio : pedido.getEnvios()) {
-                    envio.setCodigoSeguimiento(codigoSeguimiento);
-                }
-                descripcion = descripcion + "\n" + "Codigo de seguimiento de envio N° " + pedido.getEnvios().getFirst().getId() + ": " + pedido.getEnvios().getFirst().getCodigoSeguimiento();
-                }
-            else{
-                throw new NoSuchElementException("Debe ingresar los codigos de seguimiento para cada uno de los envios pertenecientes al pedido");
-            }
-            cambioEstado.setDescripcion(descripcion);
-            List<CambioEstado> cambiosEstados = pedido.getCambiosEstado();
-            cambiosEstados.add(cambioEstado);
-            pedido.setCambiosEstado(cambiosEstados);
-            cambioEstado.setEstado(despachado);
-            pedido.setEstadoActual(despachado);
-            return pedido; 
-        }
-        else{
-            throw new InvalidStateChangeException("No se puede despachar un pedido que va a ser retirado en el local por el cliente");
-        }
+    //         if(!codigosSeguimiento.isEmpty()){
+    //             String codigoSeguimiento = codigosSeguimiento;
+    //             for (Envio envio : pedido.getEnvios()) {
+    //                 envio.setCodigoSeguimiento(codigoSeguimiento);
+    //             }
+    //             descripcion = descripcion + "\n" + "Codigo de seguimiento de envio N° " + pedido.getEnvios().getFirst().getId() + ": " + pedido.getEnvios().getFirst().getCodigoSeguimiento();
+    //             }
+    //         else{
+    //             throw new NoSuchElementException("Debe ingresar los codigos de seguimiento para cada uno de los envios pertenecientes al pedido");
+    //         }
+    //         cambioEstado.setDescripcion(descripcion);
+    //         List<CambioEstado> cambiosEstados = pedido.getCambiosEstado();
+    //         cambiosEstados.add(cambioEstado);
+    //         pedido.setCambiosEstado(cambiosEstados);
+    //         cambioEstado.setEstado(despachado);
+    //         pedido.setEstadoActual(despachado);
+    //         return pedido; 
+    //     }
+    //     else{
+    //         throw new InvalidStateChangeException("No se puede despachar un pedido que va a ser retirado en el local por el cliente");
+    //     }
              
-    }
+    // }
 
     @Override
     public Pedido pedidoEnPreparacion(Pedido pedido, List<CambioEstado> ce) throws Exception {

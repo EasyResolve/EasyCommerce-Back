@@ -8,10 +8,12 @@ import java.util.Optional;
 import easycommerce.easycommerce.Excepciones.NoSuchElementException;
 import easycommerce.easycommerce.Excepciones.OutOfStockException;
 import easycommerce.easycommerce.Excepciones.QuotationNotFoundException;
+import easycommerce.easycommerce.Pedido.DTOs.EstadosGetDTO;
 import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOGet;
 import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOGetADMIN;
 import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOPost;
 import easycommerce.easycommerce.Pedido.Model.Pedido;
+import easycommerce.easycommerce.Pedido.Model.PedidoConPago;
 import jakarta.mail.MessagingException;
 
 public interface PedidoService {

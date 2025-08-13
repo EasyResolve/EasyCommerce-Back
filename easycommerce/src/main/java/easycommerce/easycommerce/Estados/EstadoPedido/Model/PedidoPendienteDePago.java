@@ -5,11 +5,11 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import backend_gnr.backend_gnr.Estados.CambioEstado.model.CambioEstado;
-import backend_gnr.backend_gnr.Excepciones.InvalidStateChangeException;
-import backend_gnr.backend_gnr.Pago.model.TipoPago;
-import backend_gnr.backend_gnr.Pedido.model.Pedido;
-import backend_gnr.backend_gnr.Pedido.model.TipoEnvio;
+import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
+import easycommerce.easycommerce.Excepciones.InvalidStateChangeException;
+import easycommerce.easycommerce.Pago.Model.TipoPago;
+import easycommerce.easycommerce.Pedido.Model.Pedido;
+import easycommerce.easycommerce.Pedido.Model.TipoEnvio;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -45,10 +45,10 @@ public class PedidoPendienteDePago extends EstadoPedido {
         throw new InvalidStateChangeException("El pedido ya se ecnuentra creado correctamente");
     }
 
-    @Override
-    public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
-        throw new InvalidStateChangeException("No se puede despachar un pedido que todavia no fue preparado");
-    }
+    // @Override
+    // public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
+    //     throw new InvalidStateChangeException("No se puede despachar un pedido que todavia no fue preparado");
+    // }
 
     @Override
     public Pedido pedidoEnPreparacion(Pedido pedido, List<CambioEstado> ce) throws Exception {
@@ -69,9 +69,9 @@ public class PedidoPendienteDePago extends EstadoPedido {
         if(pedido.getTipoEnvio() == TipoEnvio.RETIROENLOCAL && pedido.getPago().getTipoPago() != TipoPago.NAVE){
             estadosPosibles.add("entregado");
         }
-        if (pedido.getTipoEnvio() == TipoEnvio.ENVIOADOMICILIO || pedido.getPago().getTipoPago() == TipoPago.NAVE){
-            estadosPosibles.add("enPreparacion");
-        }
+        // if (pedido.getTipoEnvio() == TipoEnvio.ENVIOADOMICILIO || pedido.getPago().getTipoPago() == TipoPago.NAVE){
+        //     estadosPosibles.add("enPreparacion");
+        // }
         estadosPosibles.add("cancelado");
         pagado.setEstadosPosibles(estadosPosibles);
         CambioEstado cambioEstado = new CambioEstado();

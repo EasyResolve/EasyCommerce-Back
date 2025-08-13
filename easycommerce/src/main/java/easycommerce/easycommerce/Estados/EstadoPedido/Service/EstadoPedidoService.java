@@ -3,7 +3,8 @@ package easycommerce.easycommerce.Estados.EstadoPedido.Service;
 import java.util.List;
 import java.util.Optional;
 
-import backend_gnr.backend_gnr.Estados.EstadoPedido.model.EstadoPedido;
+import easycommerce.easycommerce.Estados.EstadoPedido.Model.EstadoPedido;
+
 
 public interface EstadoPedidoService {
     List<EstadoPedido> findAll();

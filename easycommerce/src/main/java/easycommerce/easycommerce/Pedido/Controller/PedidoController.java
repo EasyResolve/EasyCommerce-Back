@@ -1,4 +1,4 @@
-package backend_gnr.backend_gnr.Pedido.controller;
+package easycommerce.easycommerce.Pedido.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +17,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
+import easycommerce.easycommerce.Estados.Estado.DTOs.EstadoDTOGet;
+import easycommerce.easycommerce.Excepciones.NoSuchElementException;
+import easycommerce.easycommerce.Pedido.DTOs.EstadosGetDTO;
+import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOFiltro;
+import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOGet;
+import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOGetADMIN;
+import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOPost;
+import easycommerce.easycommerce.Pedido.Model.Pedido;
+import easycommerce.easycommerce.Pedido.Model.PedidoConPago;
+import easycommerce.easycommerce.Pedido.Service.PedidoService;
 
 
 
@@ -109,19 +120,19 @@ public class PedidoController {
         
     }
 
-    @PutMapping("/{id}/despachado")
-    public ResponseEntity<PedidoDTOGet> despachado(@PathVariable Long id, @RequestBody String codigoSeguimiento) throws Exception{
-        Optional<Pedido> pedidoBd = pedidoService.findById(id);
-        if(pedidoBd.isPresent()){
-            Pedido pedidoAGuardar = pedidoBd.get().getEstadoActual().pedidoDespachado(pedidoBd.get(), pedidoBd.get().getCambiosEstado(), codigoSeguimiento);
-            PedidoDTOGet pedidoGuardado = pedidoService.pedidoDespachado(pedidoAGuardar);
-            return new ResponseEntity<>(pedidoGuardado,HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    // @PutMapping("/{id}/despachado")
+    // public ResponseEntity<PedidoDTOGet> despachado(@PathVariable Long id, @RequestBody String codigoSeguimiento) throws Exception{
+    //     Optional<Pedido> pedidoBd = pedidoService.findById(id);
+    //     if(pedidoBd.isPresent()){
+    //         Pedido pedidoAGuardar = pedidoBd.get().getEstadoActual().pedidoDespachado(pedidoBd.get(), pedidoBd.get().getCambiosEstado(), codigoSeguimiento);
+    //         PedidoDTOGet pedidoGuardado = pedidoService.pedidoDespachado(pedidoAGuardar);
+    //         return new ResponseEntity<>(pedidoGuardado,HttpStatus.OK);
+    //     }
+    //     else{
+    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //     }
         
-    }
+    // }
 
     @PutMapping("/{id}/entregado")
     public ResponseEntity<PedidoDTOGet> entregado(@PathVariable Long id) throws Exception{
