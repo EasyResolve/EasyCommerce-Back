@@ -76,6 +76,7 @@ public class Articulo {
     @JoinColumn(name = "marcaId")
     private Marca marca;
     private boolean consultar;
+    private boolean destacado;
 
     public Articulo(Articulo original) {
         this.id = original.id;

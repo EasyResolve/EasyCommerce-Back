@@ -69,7 +69,7 @@ public class RubroController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Rubro> updateRubro(@PathVariable Long id,@RequestParam MultipartFile file, @RequestParam String descripcion, @RequestParam Boolean visible) throws IOException{
+    public ResponseEntity<Rubro> updateRubro(@PathVariable Long id,@RequestParam(required = false) MultipartFile file, @RequestParam String descripcion, @RequestParam Boolean visible) throws IOException{
         Optional<Rubro> rubro = rubroService.findById(id);
         if(rubro.isPresent()){
             Rubro rubroModificado = rubro.get();

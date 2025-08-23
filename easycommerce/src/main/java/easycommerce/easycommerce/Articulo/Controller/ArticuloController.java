@@ -24,6 +24,7 @@ import easycommerce.easycommerce.Articulo.DTOs.ArticuloDTOActualizacion;
 import easycommerce.easycommerce.Articulo.DTOs.ArticuloDTOGet;
 import easycommerce.easycommerce.Articulo.DTOs.ArticuloDTONombre;
 import easycommerce.easycommerce.Articulo.DTOs.ArticuloDTOPost;
+import easycommerce.easycommerce.Articulo.DTOs.IsDestacado;
 import easycommerce.easycommerce.Articulo.Model.Articulo;
 import easycommerce.easycommerce.Articulo.Model.ArticuloConImagenesYErrores;
 import easycommerce.easycommerce.Articulo.Service.ArticuloService;
@@ -151,5 +152,16 @@ public class ArticuloController {
     public ResponseEntity<ArticuloDTOGet> setArticuloConsulta(@RequestBody ArticuloDTOGet articulo) throws NoSuchElementException, Exception{
         ArticuloDTOGet articuloConsultado = articuloService.setConsultar(articulo.id(), articulo.consultar());
         return new ResponseEntity<>(articuloConsultado, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ArticuloDTOGet> setDestacado(@PathVariable Long id,@RequestBody IsDestacado destacado){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = null;
+        if (authentication != null && authentication.isAuthenticated() && authentication.getName() != "anonymousUser") {
+            username = authentication.getName();
+        }
+        ArticuloDTOGet articuloBd = articuloService.setDestacado(id, destacado);
+        return new ResponseEntity<>(articuloBd, HttpStatus.OK);
     }
 }

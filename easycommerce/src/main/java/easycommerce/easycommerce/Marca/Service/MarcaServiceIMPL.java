@@ -70,7 +70,9 @@ public class MarcaServiceIMPL implements MarcaService {
                 marcaAGuardar.setCodigo(Long.valueOf(1));
             }
         }
-        marcaAGuardar.setCodigo(marca.marca().getCodigo());
+        else{
+            marcaAGuardar.setCodigo(marca.marca().getCodigo());
+        } 
         marcaAGuardar.setDescripcion(marca.marca().getDescripcion());
         marcaAGuardar.setUrlImagen(marca.marca().getUrlImagen());
         if(marca.marca().isMostrar()){

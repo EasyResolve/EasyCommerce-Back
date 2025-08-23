@@ -41,6 +41,7 @@ import easycommerce.easycommerce.TareasProgramadas.ImageStorageUtil;
 import easycommerce.easycommerce.Usuario.Model.Usuario;
 import easycommerce.easycommerce.Usuario.Repository.UsuarioRepository;
 import easycommerce.easycommerce.Articulo.DTOs.ArticuloDTOPost;
+import easycommerce.easycommerce.Articulo.DTOs.IsDestacado;
 import easycommerce.easycommerce.Articulo.Model.ArticuloConImagenes;
 import easycommerce.easycommerce.Articulo.Model.ArticuloConImagenesYErrores;
 
@@ -468,7 +469,7 @@ public class ArticuloServiceIMPL implements ArticuloService{
         List<Articulo> articulosBd = articuloRepository.findAll();
         List<ArticuloDTOGet> articulosAMostrar = new ArrayList<>();
         for (Articulo articulo : articulosBd) {
-            ArticuloDTOGet articuloAMostrar = new ArticuloDTOGet(articulo.getId(), articulo.getNombre(), articulo.getDescripcion(), articulo.getRubro(), articulo.getSubRubro(), articulo.getStockActual(), articulo.getPrecioOferta(), articulo.getPreVtaPub1(), articulo.isEsOferta(), articulo.isPrecioDolar(), articulo.getFechaDesdeOferta(), articulo.getFechaHastaOferta(), articulo.isEsNuevo(), articulo.isActivo(), articulo.getPorcentajeOferta(), articulo.getCodigoOrigen(), articulo.getCodigoDeBarra(), articulo.getUrlImagenes(), articulo.getAlto(), articulo.getAncho(), articulo.getLargo(), articulo.getPeso(), articulo.getAlicuotaIva(), articulo.getMarca(), articulo.isConsultar());
+            ArticuloDTOGet articuloAMostrar = new ArticuloDTOGet(articulo.getId(), articulo.getNombre(), articulo.getDescripcion(), articulo.getRubro(), articulo.getSubRubro(), articulo.getStockActual(), articulo.getPrecioOferta(), articulo.getPreVtaPub1(), articulo.isEsOferta(), articulo.isPrecioDolar(), articulo.getFechaDesdeOferta(), articulo.getFechaHastaOferta(), articulo.isEsNuevo(), articulo.isActivo(), articulo.getPorcentajeOferta(), articulo.getCodigoOrigen(), articulo.getCodigoDeBarra(), articulo.getUrlImagenes(), articulo.getAlto(), articulo.getAncho(), articulo.getLargo(), articulo.getPeso(), articulo.getAlicuotaIva(), articulo.getMarca(), articulo.isConsultar(), articulo.isDestacado());
             articulosAMostrar.add(articuloAMostrar);
         }
         return articulosAMostrar;
@@ -631,7 +632,8 @@ public class ArticuloServiceIMPL implements ArticuloService{
                 articulo.getPeso(),
                 articulo.getAlicuotaIva(),
                 articulo.getMarca(),
-                articulo.isConsultar() 
+                articulo.isConsultar(),
+                articulo.isDestacado()
             );
             
         } catch (Exception e) {
@@ -657,10 +659,20 @@ public class ArticuloServiceIMPL implements ArticuloService{
             Articulo articulo = articuloOpt.get();
             articulo.setConsultar(consultar);
             articuloRepository.save(articulo);
-            return new ArticuloDTOGet(articulo.getId(), articulo.getNombre(), articulo.getDescripcion(), articulo.getRubro(), articulo.getSubRubro(), articulo.getStockActual(), articulo.getPrecioOferta(), articulo.getPreVtaMay1(), articulo.isEsOferta(), articulo.isPrecioDolar(), articulo.getFechaDesdeOferta(), articulo.getFechaHastaOferta(), articulo.isEsNuevo(), articulo.isActivo(), articulo.getPorcentajeOferta(), articulo.getCodigoOrigen(), articulo.getCodigoDeBarra(), articulo.getUrlImagenes(), articulo.getAlto(), articulo.getAncho(), articulo.getLargo(), articulo.getPeso(), articulo.getAlicuotaIva(), articulo.getMarca(), articulo.isConsultar());
+            return new ArticuloDTOGet(articulo.getId(), articulo.getNombre(), articulo.getDescripcion(), articulo.getRubro(), articulo.getSubRubro(), articulo.getStockActual(), articulo.getPrecioOferta(), articulo.getPreVtaMay1(), articulo.isEsOferta(), articulo.isPrecioDolar(), articulo.getFechaDesdeOferta(), articulo.getFechaHastaOferta(), articulo.isEsNuevo(), articulo.isActivo(), articulo.getPorcentajeOferta(), articulo.getCodigoOrigen(), articulo.getCodigoDeBarra(), articulo.getUrlImagenes(), articulo.getAlto(), articulo.getAncho(), articulo.getLargo(), articulo.getPeso(), articulo.getAlicuotaIva(), articulo.getMarca(), articulo.isConsultar(), articulo.isDestacado());
         } else {
             throw new NoSuchElementException("No se encontró el artículo con ID: " + id);
         }
+    }
+
+    @Override
+    public ArticuloDTOGet setDestacado(Long id, IsDestacado destacado) {
+        Optional<Articulo> articuloBd = articuloRepository.findById(id);
+        Articulo articulo = articuloBd.get();
+        if(articuloBd.isPresent()){
+            articulo.setDestacado(destacado.isDestacado());
+        }
+        return new ArticuloDTOGet(articulo.getId(), articulo.getNombre(), articulo.getDescripcion(), articulo.getRubro(), articulo.getSubRubro(), articulo.getStockActual(), articulo.getPrecioOferta(), articulo.getPreVtaMay1(), articulo.isEsOferta(), articulo.isPrecioDolar(), articulo.getFechaDesdeOferta(), articulo.getFechaHastaOferta(), articulo.isEsNuevo(), articulo.isActivo(), articulo.getPorcentajeOferta(), articulo.getCodigoOrigen(), articulo.getCodigoDeBarra(), articulo.getUrlImagenes(), articulo.getAlto(), articulo.getAncho(), articulo.getLargo(), articulo.getPeso(), articulo.getAlicuotaIva(), articulo.getMarca(), articulo.isConsultar(), articulo.isDestacado());
     }
 
 }

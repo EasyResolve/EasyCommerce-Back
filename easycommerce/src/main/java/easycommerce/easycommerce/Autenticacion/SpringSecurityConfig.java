@@ -57,7 +57,7 @@ public class SpringSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://tienda.gnr.ar", "https://tienda.gnr.ar", "http://www.tienda.gnr.ar", "https://www.tienda.gnr.ar", "http://gnr.ar", "https://gnr.ar", "http://www.gnr.ar", "https://www.gnr.ar", "http://gnrcomputacion.com.ar", "https://gnrcomputacion.com.ar", "http://www.gnrcomputacion.com.ar", "https://www.gnrcomputacion.com.ar"));
+        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
@@ -127,6 +127,11 @@ public class SpringSecurityConfig {
             .requestMatchers(HttpMethod.GET, "/tarjetaRubro/**").permitAll()
             .requestMatchers(HttpMethod.POST, "/envio/cotizarEnvio/**").permitAll()
             .requestMatchers(HttpMethod.GET, "/marca/**").permitAll()
+            .requestMatchers(
+                    "/v3/api-docs/**",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html"
+                ).permitAll()
             .requestMatchers(HttpMethod.POST, "/marca/lista").access((authentication, context) -> {
                 String ip = context.getRequest().getRemoteAddr();
                 if ("45.231.218.92".equals(ip)) {
