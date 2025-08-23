@@ -156,11 +156,6 @@ public class ArticuloController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ArticuloDTOGet> setDestacado(@PathVariable Long id,@RequestBody IsDestacado destacado){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = null;
-        if (authentication != null && authentication.isAuthenticated() && authentication.getName() != "anonymousUser") {
-            username = authentication.getName();
-        }
         ArticuloDTOGet articuloBd = articuloService.setDestacado(id, destacado);
         return new ResponseEntity<>(articuloBd, HttpStatus.OK);
     }
