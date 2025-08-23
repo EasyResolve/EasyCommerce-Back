@@ -1,5 +1,6 @@
 package easycommerce.easycommerce.Rubro.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,6 @@ public interface RubroService {
     List<Rubro> findAll();
     Optional<Rubro> findById(Long id);
     List<Rubro> saveList(List<RubroDTOPost> rubros);
-    Rubro save(RubroDTOPut rubro);
+    Rubro save(RubroDTOPut rubro) throws IOException;
     void delete(Long id);
 }
