@@ -2,6 +2,8 @@ package easycommerce.easycommerce.Rubro.Model;
 
 import java.util.List;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import easycommerce.easycommerce.SubRubro.Model.SubRubro;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -29,6 +31,8 @@ public class Rubro {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "subRubroId")
     private List<SubRubro> subRubros;
+    private Boolean visible;
+    private String imagen;
 
     public void agregarSubRubro(SubRubro subRubro){
         subRubros.add(subRubro);

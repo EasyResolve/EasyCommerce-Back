@@ -1,5 +1,6 @@
 package easycommerce.easycommerce.Rubro.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,15 +12,16 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
-
-
+import org.springframework.web.multipart.MultipartFile;
 
 import easycommerce.easycommerce.Articulo.Repository.ArticuloRepository;
 import easycommerce.easycommerce.Rubro.DTOs.RubroDTOPost;
+import easycommerce.easycommerce.Rubro.DTOs.RubroDTOPut;
 import easycommerce.easycommerce.Rubro.Model.Rubro;
 import easycommerce.easycommerce.Rubro.Repository.RubroRepository;
 import easycommerce.easycommerce.SubRubro.Model.SubRubro;
 import easycommerce.easycommerce.SubRubro.Repository.SubRubroRepository;
+import easycommerce.easycommerce.TareasProgramadas.ImageStorageUtil;
 
 @Service
 public class RubroServiceIMPL implements RubroService {
@@ -91,11 +93,16 @@ public class RubroServiceIMPL implements RubroService {
                 if(rubroBd.isPresent()){
                     //Seteo el codigo del rubro y lo inserto al hashmap
                     rubroAGuardar.setCodigo(rubroBd.get().getCodigo());
+                    rubroAGuardar.setVisible(rubroBd.get().getVisible());
+                    rubroAGuardar.setImagen(rubroBd.get().getImagen());
                     rubrosAGuardar.put(prefijo, rubroAGuardar);
                 }
                 //si no existe el rubro lo inserto al hashmap
                 else{
+                    rubroAGuardar.setVisible(false);
+                    rubroAGuardar.setImagen(null);
                     rubrosAGuardar.put(prefijo, rubroAGuardar);
+                    
                 }
             }
             //Si es un subrubro, es decir que no termina en 000
@@ -136,8 +143,18 @@ public class RubroServiceIMPL implements RubroService {
     }
 
     @Override
-    public Rubro save(Rubro rubro) {
-        return rubroRepository.save(rubro);
+    public Rubro save(RubroDTOPut rubro) throws IOException {
+        Rubro rubroGuardado = rubroRepository.save(rubro.rubro());
+        if(rubro.file() != null){
+            List<MultipartFile> files = new ArrayList<>();
+            files.add(rubro.file());
+            List<String> rutas = ImageStorageUtil.saveImages(files, "imagenes/rubros/rubro_" + rubroGuardado.getCodigo());
+            if(!rutas.isEmpty()){
+                rubroGuardado.setImagen(rutas.getFirst());
+            }
+            rubroGuardado = rubroRepository.save(rubroGuardado);
+        }
+        return rubroGuardado;
     }
 
 }
