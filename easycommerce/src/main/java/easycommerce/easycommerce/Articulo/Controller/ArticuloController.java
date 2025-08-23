@@ -154,7 +154,7 @@ public class ArticuloController {
         return new ResponseEntity<>(articuloConsultado, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/idDestacado/{id}")
     public ResponseEntity<ArticuloDTOGet> setDestacado(@PathVariable Long id,@RequestBody IsDestacado destacado){
         ArticuloDTOGet articuloBd = articuloService.setDestacado(id, destacado);
         return new ResponseEntity<>(articuloBd, HttpStatus.OK);
