@@ -23,15 +23,12 @@ public interface PedidoService {
     void delete(Long id) throws NoSuchElementException;
     List<PedidoDTOGet> findByCliente(Long clienteId) throws NoSuchElementException, Exception;
     Optional<Pedido> obtenerEstados(EstadosGetDTO datos) throws NoSuchElementException;
-    PedidoDTOGet pedidoCreado(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
     PedidoDTOGet pedidoPendienteDePago(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
-    PedidoDTOGet pedidoPagado(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
     PedidoDTOGet pedidoEnPreparacion(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
     PedidoDTOGet pedidoListoParaEntregar(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
-    //PedidoDTOGet pedidoDespachado(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
+    PedidoDTOGet pedidoEnCamino(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
     PedidoDTOGet pedidoEntregado(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
     PedidoDTOGet pedidoCancelado(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
-    PedidoDTOGet pedidoRechazado(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
     PedidoDTOGet saveCambioEstado(Pedido pedido) throws Exception;
     List<Pedido> findByFiltro(LocalDate fechaInicio, LocalDate fechaFin, String estado, String documento);
     Optional<Pedido> findById(Long id);

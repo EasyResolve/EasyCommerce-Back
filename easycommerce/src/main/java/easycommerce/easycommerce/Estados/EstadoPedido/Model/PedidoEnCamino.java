@@ -12,27 +12,41 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("PedidoDespachado")
-public class PedidoDespachado extends EstadoPedido {
+@DiscriminatorValue("PedidoEnCamino")
+public class PedidoEnCamino extends EstadoPedido {
+
+    @Override
+    public void obtenerEstadosPosibles() {
+        List<String> estadosPosibles = new ArrayList<>();
+        estadosPosibles.add("Cancelar");
+        estadosPosibles.add("Entregar");
+        setEstadosPosibles(estadosPosibles);
+    }
 
     @Override
     public String getEstado() throws Exception {
-        return "Pedido Despachado";
+        return "Pedido En Camino";
     }
 
     @Override
     public Pedido pedidoCancelado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("El pedido no se puede cancelar debido a que ya se encuentra en camino a su domicilio");
+        finalizarCE(ce);
+        PedidoCancelado cancelado = new PedidoCancelado();
+        cancelado.setDescripcion("Pedido Cancelado");
+        CambioEstado cambioEstado = new CambioEstado();
+        cambioEstado.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
+        cambioEstado.setDescripcion("El pedido fue cancelado por el cliente");
+        List<CambioEstado> cambiosEstados = pedido.getCambiosEstado();
+        cambiosEstados.add(cambioEstado);
+        pedido.setCambiosEstado(cambiosEstados);
+        cambioEstado.setEstado(cancelado);
+        pedido.setEstadoActual(cancelado);
+        return pedido;
     }
 
     @Override
-    public Pedido pedidoCreado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("El pedido ya se ecnuentra creado correctamente");
-    }
-
-    @Override
-    public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
-        throw new InvalidStateChangeException("El pedido fue despachado recientemente");
+    public Pedido pedidoEnCamino(Pedido pedido, List<CambioEstado> ce) throws Exception {
+        throw new InvalidStateChangeException("El pedido ya se encuentra en camino");
     }
 
     @Override
@@ -45,8 +59,6 @@ public class PedidoDespachado extends EstadoPedido {
         finalizarCE(ce);
         PedidoEntregado entregado = new PedidoEntregado();
         entregado.setDescripcion("Pedido Entregado");
-        List<String> estadosPosibles = new ArrayList<>();
-        entregado.setEstadosPosibles(estadosPosibles);
         CambioEstado cambioEstado = new CambioEstado();
         cambioEstado.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
         cambioEstado.setDescripcion("El pedido fue entregado en el domicilio especificado por el cliente");
@@ -64,18 +76,8 @@ public class PedidoDespachado extends EstadoPedido {
     }
 
     @Override
-    public Pedido pedidoPagado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("El pedido ya se encuentra pagado");
-    }
-
-    @Override
     public Pedido pedidoPendienteDePago(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new InvalidStateChangeException("El pedido ya se encuentra pagado");
-    }
-
-    @Override
-    public Pedido pedidoRechazado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("El pedido no puede ser rechazado debido a que ya fue pagado");
     }
 
 }

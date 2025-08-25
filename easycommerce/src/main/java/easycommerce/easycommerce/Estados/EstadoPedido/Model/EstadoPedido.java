@@ -1,5 +1,6 @@
 package easycommerce.easycommerce.Estados.EstadoPedido.Model;
 
+import java.beans.Transient;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -32,7 +33,12 @@ public class EstadoPedido extends Estado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private List<String> estadosPosibles;
+    private boolean fueExportado;
+
+    @Override
+    public void obtenerEstadosPosibles() throws Exception{
+        throw new Exception();
+    }
 
     @Override
     public void finalizarCE(List<CambioEstado> ce) {
@@ -49,22 +55,22 @@ public class EstadoPedido extends Estado {
     }
 
     @Override
-    public Pedido pedidoCancelado(Pedido pedido, List<CambioEstado> ce) throws Exception {
+    public Pedido pedidoPendienteDePago(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new Exception();
     }
-
-    @Override
-    public Pedido pedidoCreado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new Exception();
-    }
-
-    // @Override
-    // public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
-    //     throw new Exception();
-    // }
 
     @Override
     public Pedido pedidoEnPreparacion(Pedido pedido, List<CambioEstado> ce) throws Exception {
+        throw new Exception();
+    }
+
+    @Override
+    public Pedido pedidoListoParaEntregar(Pedido pedido, List<CambioEstado> ce) throws Exception {
+        throw new Exception();
+    }
+
+    @Override 
+    public Pedido pedidoEnCamino(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new Exception();
     }
 
@@ -74,24 +80,8 @@ public class EstadoPedido extends Estado {
     }
 
     @Override
-    public Pedido pedidoPagado(Pedido pedido, List<CambioEstado> ce) throws Exception {
+    public Pedido pedidoCancelado(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new Exception();
     }
-
-    @Override
-    public Pedido pedidoPendienteDePago(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new Exception();
-    }
-
-    @Override
-    public Pedido pedidoRechazado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new Exception();
-    }
-
-    @Override
-    public Pedido pedidoListoParaEntregar(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new Exception();
-    }
-
     
 }

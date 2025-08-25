@@ -49,10 +49,8 @@ import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
 import easycommerce.easycommerce.Estados.CambioEstado.Repository.CambioEstadoRepository;
 import easycommerce.easycommerce.Estados.Estado.Repository.EstadoRepository;
 import easycommerce.easycommerce.Estados.EstadoPedido.Model.EstadoPedido;
-import easycommerce.easycommerce.Estados.EstadoPedido.Model.PedidoCreado;
 import easycommerce.easycommerce.Estados.EstadoPedido.Model.PedidoEnPreparacion;
 import easycommerce.easycommerce.Estados.EstadoPedido.Model.PedidoPendienteDePago;
-import easycommerce.easycommerce.Estados.EstadoPedido.Model.PedidoRechazado;
 import easycommerce.easycommerce.Excepciones.NoSuchElementException;
 import easycommerce.easycommerce.Excepciones.OutOfStockException;
 import easycommerce.easycommerce.Excepciones.QuotationNotFoundException;
@@ -345,13 +343,8 @@ public class PedidoServiceIMPL implements PedidoService {
         pedidoAGuardar.setFechaCreacion(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
 
         //Creo un cambio de estado estableciendo como estado actual el estado creado
-        PedidoCreado creado = new PedidoCreado();
+        PedidoPendienteDePago creado = new PedidoPendienteDePago();
         creado.setDescripcion("Pedido Creado");
-        List<String> estadoPosibles = new ArrayList<>();
-        estadoPosibles.add("pendienteDePago");
-        estadoPosibles.add("cancelado");
-        estadoPosibles.add("enPreparacion");
-        creado.setEstadosPosibles(estadoPosibles);
         List<CambioEstado> ce = new ArrayList<>();
         CambioEstado cambioEstadoCreado = new CambioEstado();
         cambioEstadoCreado.setDescripcion("El pedido fue registrado con exito");
@@ -463,11 +456,6 @@ public class PedidoServiceIMPL implements PedidoService {
                 if(pedidoAGuardar.getPago().getTipoPago() == TipoPago.EFECTIVO){
                     PedidoEnPreparacion enPreparacion = new PedidoEnPreparacion();
                     enPreparacion.setDescripcion("Pedido En Preparacion");
-                    List<String> estadoPosibleEnPreparacion = new ArrayList<>();
-                    estadoPosibleEnPreparacion.add("listoParaEntregar");
-                    estadoPosibleEnPreparacion.add("cancelado");
-                    estadoPosibleEnPreparacion.add("rechazado");
-                    enPreparacion.setEstadosPosibles(estadoPosibleEnPreparacion);
                     CambioEstado cambioEstadoEnPreparacion = new CambioEstado();
                     cambioEstadoEnPreparacion.setDescripcion("El pedido se encuentra actualmente en preparacion, pronto estara listo para ser retirado");
                     cambioEstadoEnPreparacion.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
@@ -482,11 +470,6 @@ public class PedidoServiceIMPL implements PedidoService {
                 if(pedidoAGuardar.getPago().getTipoPago() == TipoPago.TRANSFERENCIA){
                     PedidoPendienteDePago pendienteDePagoRetiroLocal = new PedidoPendienteDePago();
                     pendienteDePagoRetiroLocal.setDescripcion("Pedido Pendiente De Pago");
-                    List<String> estadosPosiblesPendientePagoNave = new ArrayList<>();
-                    estadosPosiblesPendientePagoNave.add("pagado");
-                    estadosPosiblesPendientePagoNave.add("rechazado");
-                    estadosPosiblesPendientePagoNave.add("cancelado");
-                    pendienteDePagoRetiroLocal.setEstadosPosibles(estadosPosiblesPendientePagoNave);
                     CambioEstado cambioEstadoPendienteDePagoRetiroLocal = new CambioEstado();
                     cambioEstadoPendienteDePagoRetiroLocal.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
                     cambioEstadoPendienteDePagoRetiroLocal.setEstado(pendienteDePagoRetiroLocal);
@@ -556,21 +539,6 @@ public class PedidoServiceIMPL implements PedidoService {
     }
 
     @Override
-    public PedidoDTOGet pedidoCreado(Pedido pedido) throws Exception {
-        List<CambioEstado> ce = cambioEstadoRepository.saveAll(pedido.getCambiosEstado());
-        EstadoPedido estadoActual = estadoRepository.save(pedido.getEstadoActual());
-        pedido.setCambiosEstado(ce);
-        pedido.setEstadoActual(estadoActual);
-        pedido = pedidoRepository.save(pedido);
-        correoService.enviarEmailEstadoPedido(pedido.getId());
-        Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
-        .filter(CambioEstado::esActual)
-        .findFirst();
-        PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get());
-        return pedidoAMostrar;
-    }
-
-    @Override
     public PedidoDTOGet pedidoPendienteDePago(Pedido pedido) throws Exception {
         List<CambioEstado> ce = cambioEstadoRepository.saveAll(pedido.getCambiosEstado());
         EstadoPedido estadoActual = estadoRepository.save(pedido.getEstadoActual());
@@ -581,36 +549,6 @@ public class PedidoServiceIMPL implements PedidoService {
         Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
         .filter(CambioEstado::esActual)
         .findFirst();
-        PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get());
-        return pedidoAMostrar;
-    }
-
-    @Override
-    public PedidoDTOGet pedidoPagado(Pedido pedido) throws Exception {
-        List<CambioEstado> ce = cambioEstadoRepository.saveAll(pedido.getCambiosEstado());
-        EstadoPedido estadoActual = estadoRepository.save(pedido.getEstadoActual());
-        pedido.setCambiosEstado(ce);
-        pedido.setEstadoActual(estadoActual);
-        pedido = pedidoRepository.save(pedido);
-        correoService.enviarEmailEstadoPedido(pedido.getId());
-        Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
-        .filter(CambioEstado::esActual)
-        .findFirst();
-        for (int i = pedido.getCambiosEstado().size() - 1; i >= 0; i--) {
-            if(pedido.getCambiosEstado().get(i).getEstado() instanceof PedidoRechazado){
-                for (DetallePedido detalle : pedido.getDetalles()) {
-                    Optional<Articulo> articuloBd = articuloRepository.findById(detalle.getArticulo().getId());
-                    if(articuloBd.isPresent()){
-                        Articulo articulo = articuloBd.get();
-                        Integer stockActual = articulo.getStockActual();
-                        stockActual -= detalle.getCantidad();
-                        articulo.setStockActual(stockActual);
-                        articuloRepository.save(articulo);
-                    }
-                }
-                break;
-            }
-        }
         PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get());
         return pedidoAMostrar;
     }
@@ -645,8 +583,8 @@ public class PedidoServiceIMPL implements PedidoService {
         return pedidoAMostrar;
     }
 
-    /*@Override
-    public PedidoDTOGet pedidoDespachado(Pedido pedido) throws Exception {
+    @Override
+    public PedidoDTOGet pedidoEnCamino(Pedido pedido) throws Exception {
         List<CambioEstado> ce = cambioEstadoRepository.saveAll(pedido.getCambiosEstado());
         EstadoPedido estadoActual = estadoRepository.save(pedido.getEstadoActual());
         pedido.setCambiosEstado(ce);
@@ -659,7 +597,6 @@ public class PedidoServiceIMPL implements PedidoService {
         PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get());
         return pedidoAMostrar;
     }
-    */
 
     @Override
     public PedidoDTOGet pedidoEntregado(Pedido pedido) throws Exception {
@@ -678,31 +615,6 @@ public class PedidoServiceIMPL implements PedidoService {
 
     @Override
     public PedidoDTOGet pedidoCancelado(Pedido pedido) throws Exception {
-        List<CambioEstado> ce = cambioEstadoRepository.saveAll(pedido.getCambiosEstado());
-        EstadoPedido estadoActual = estadoRepository.save(pedido.getEstadoActual());
-        pedido.setCambiosEstado(ce);
-        pedido.setEstadoActual(estadoActual);
-        pedido = pedidoRepository.save(pedido);
-        correoService.enviarEmailEstadoPedido(pedido.getId());
-        Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
-        .filter(CambioEstado::esActual)
-        .findFirst();
-        PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get());
-        for (DetallePedido detalles : pedido.getDetalles()) {
-            Optional<Articulo> articulo = articuloRepository.findById(detalles.getArticulo().getId());
-            if(articulo.isPresent()){
-                Articulo articuloBd = articulo.get();
-                Integer stockActual = articuloBd.getStockActual();
-                stockActual += detalles.getCantidad();
-                articuloBd.setStockActual(stockActual);
-                articuloRepository.save(articulo.get());
-            }
-        }
-        return pedidoAMostrar;
-    }
-
-    @Override
-    public PedidoDTOGet pedidoRechazado(Pedido pedido) throws Exception {
         List<CambioEstado> ce = cambioEstadoRepository.saveAll(pedido.getCambiosEstado());
         EstadoPedido estadoActual = estadoRepository.save(pedido.getEstadoActual());
         pedido.setCambiosEstado(ce);

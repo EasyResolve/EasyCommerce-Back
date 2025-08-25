@@ -23,16 +23,6 @@ public class PedidoEntregado extends EstadoPedido {
     }
 
     @Override
-    public Pedido pedidoCreado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("No se puede crear un pedido ya entregado");
-    }
-
-    // @Override
-    // public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
-    //     throw new InvalidStateChangeException("No se puede despachar un pedido que ya fue entregado");
-    // }
-
-    @Override
     public Pedido pedidoEnPreparacion(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new InvalidStateChangeException("No se puede preparar un pedido que ya se encuentra entregado");
     }
@@ -48,18 +38,13 @@ public class PedidoEntregado extends EstadoPedido {
     }
 
     @Override
-    public Pedido pedidoPagado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("No se puede pagar un pedido que ya fue entregado");
-    }
-
-    @Override
     public Pedido pedidoPendienteDePago(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new InvalidStateChangeException("El pedido ya se encuentra pagado y entregado");
     }
 
     @Override
-    public Pedido pedidoRechazado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("No se puede cancelar un pedido que ya fue entregado");
+    public Pedido pedidoEnCamino(Pedido pedido, List<CambioEstado> ce) throws Exception {
+        throw new InvalidStateChangeException("El pedido ya se encuentra entregado");
     }
     
 }

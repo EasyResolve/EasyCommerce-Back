@@ -23,16 +23,6 @@ public class PedidoCancelado extends EstadoPedido {
     }
 
     @Override
-    public Pedido pedidoCreado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("El pedido ya se encuentra cancelado");
-    }
-
-    // @Override
-    // public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
-    //     throw new InvalidStateChangeException("El pedido ya se encuentra cancelado");
-    // }
-
-    @Override
     public Pedido pedidoEnPreparacion(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new InvalidStateChangeException("El pedido ya se encuentra cancelado");
     }
@@ -48,17 +38,12 @@ public class PedidoCancelado extends EstadoPedido {
     }
 
     @Override
-    public Pedido pedidoPagado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("El pedido ya se encuentra cancelado");
-    }
-
-    @Override
     public Pedido pedidoPendienteDePago(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new InvalidStateChangeException("El pedido ya se encuentra cancelado");
     }
 
     @Override
-    public Pedido pedidoRechazado(Pedido pedido, List<CambioEstado> ce) throws Exception {
+    public Pedido pedidoEnCamino(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new InvalidStateChangeException("El pedido ya se encuentra cancelado");
     }
 

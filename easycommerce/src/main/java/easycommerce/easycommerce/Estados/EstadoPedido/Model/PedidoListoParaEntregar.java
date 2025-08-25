@@ -18,6 +18,14 @@ import jakarta.persistence.Entity;
 public class PedidoListoParaEntregar extends EstadoPedido {
 
     @Override
+    public void obtenerEstadosPosibles() throws Exception{
+        List<String> estadosPosibles = new ArrayList<>();
+        estadosPosibles.add("Entregar");
+        estadosPosibles.add("Cancelar");
+        setEstadosPosibles(estadosPosibles);
+    }
+
+    @Override
     public String getEstado() throws Exception {
         return "Pedido Listo Para Entregar";
     }
@@ -27,8 +35,6 @@ public class PedidoListoParaEntregar extends EstadoPedido {
         finalizarCE(ce);
         PedidoCancelado cancelado = new PedidoCancelado();
         cancelado.setDescripcion("Pedido Cancelado");
-        List<String> estadosPosibles = new ArrayList<>();
-        cancelado.setEstadosPosibles(estadosPosibles);
         CambioEstado cambioEstado = new CambioEstado();
         cambioEstado.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
         cambioEstado.setDescripcion("El pedido fue cancelado por el cliente");
@@ -41,16 +47,6 @@ public class PedidoListoParaEntregar extends EstadoPedido {
     }
 
     @Override
-    public Pedido pedidoCreado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("El pedido ya se encuentra creado correctamente");
-    }
-
-    // @Override
-    // public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
-    //     throw new InvalidStateChangeException("No se puede despachar un pedido que esta listo para entregar en tienda");
-    // }
-
-    @Override
     public Pedido pedidoEnPreparacion(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new InvalidStateChangeException("El pedido ya se encuentra preparado y listo para retirar");
     }
@@ -61,8 +57,6 @@ public class PedidoListoParaEntregar extends EstadoPedido {
             finalizarCE(ce);
             PedidoEntregado entregado = new PedidoEntregado();
             entregado.setDescripcion("Pedido Entregado");
-            List<String> estadoPosibles = new ArrayList<>();
-            entregado.setEstadosPosibles(estadoPosibles);
             CambioEstado cambioEstado = new CambioEstado();
             cambioEstado.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
             cambioEstado.setDescripcion("El pedido fue entregado al cliente en el local comercial");
@@ -85,21 +79,11 @@ public class PedidoListoParaEntregar extends EstadoPedido {
     }
 
     @Override
-    public Pedido pedidoPagado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("El pedido ya se encuentra pagado");
-    }
-
-    @Override
     public Pedido pedidoPendienteDePago(Pedido pedido, List<CambioEstado> ce) throws Exception {
         if(pedido.getTipoEnvio() == TipoEnvio.RETIROENLOCAL && (pedido.getPago().getTipoPago() == TipoPago.EFECTIVO)){
             finalizarCE(ce);
             PedidoPendienteDePago pendienteDePago = new PedidoPendienteDePago();
             pendienteDePago.setDescripcion("Pedido Pendiente De Pago");
-            List<String> estadosPosibles = new ArrayList<>();
-            estadosPosibles.add("pagado");
-            estadosPosibles.add("cancelado");
-            estadosPosibles.add("rechazado");
-            pendienteDePago.setEstadosPosibles(estadosPosibles);
             CambioEstado cambioEstado = new CambioEstado();
             cambioEstado.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
             String descripcion = "Lo esperamos en el local para abonar y retirar su pedido";
@@ -118,8 +102,8 @@ public class PedidoListoParaEntregar extends EstadoPedido {
     }
 
     @Override
-    public Pedido pedidoRechazado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("El pedido no se puede cancelar debido a que ya fue pagado");
+    public Pedido pedidoEnCamino(Pedido pedido, List<CambioEstado> ce) throws Exception {
+        throw new InvalidStateChangeException("El pedido es para retiro en el local");
     }
 
 }

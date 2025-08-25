@@ -1,5 +1,7 @@
 package easycommerce.easycommerce.Estados.Estado.Model;
 
+// import java.beans.Transient; // Removed incorrect import
+import jakarta.persistence.Transient;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -30,6 +32,8 @@ public class Estado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String descripcion;
+    @Transient
+    private List<String> estadosPosibles;
 
     public void finalizarCE(List<CambioEstado> ce)
     {
@@ -56,43 +60,35 @@ public class Estado {
         throw new Exception();
     }
 
-    public Pedido pedidoCreado(Pedido pedido, List<CambioEstado> ce) throws Exception{
+    public Pedido pedidoPendienteDePago(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new Exception();
     }
 
-    public Pedido pedidoPendienteDePago(Pedido pedido, List<CambioEstado> ce) throws Exception{
+    public Pedido pedidoEnPreparacion(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new Exception();
     }
 
-    public Pedido pedidoPagado(Pedido pedido, List<CambioEstado> ce) throws Exception{
+    public Pedido pedidoListoParaEntregar(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new Exception();
     }
 
-    public Pedido pedidoEnPreparacion(Pedido pedido, List<CambioEstado> ce) throws Exception{
+    public Pedido pedidoEnCamino(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new Exception();
     }
 
-    public Pedido pedidoListoParaEntregar(Pedido pedido, List<CambioEstado> ce) throws Exception{
+    public Pedido pedidoEntregado(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new Exception();
     }
 
-    public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception{
-        throw new Exception();
-    }
-
-    public Pedido pedidoEntregado(Pedido pedido, List<CambioEstado> ce) throws Exception{
-        throw new Exception();
-    }
-
-    public Pedido pedidoRechazado(Pedido pedido, List<CambioEstado> ce) throws Exception{
-        throw new Exception();
-    }
-
-    public Pedido pedidoCancelado(Pedido pedido, List<CambioEstado> ce) throws Exception{
+    public Pedido pedidoCancelado(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new Exception();
     }
     
     public String getEstado() throws Exception{
+        throw new Exception();
+    }
+
+    public void obtenerEstadosPosibles() throws Exception {
         throw new Exception();
     }
 

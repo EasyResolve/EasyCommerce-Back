@@ -18,6 +18,14 @@ import jakarta.persistence.Entity;
 public class PedidoPendienteDePago extends EstadoPedido {
 
     @Override
+    public void obtenerEstadosPosibles() throws Exception{
+        List<String> estadosPosibles = new ArrayList<>();
+        estadosPosibles.add("AceptarPago");
+        estadosPosibles.add("Cancelar");
+        setEstadosPosibles(estadosPosibles);
+    }
+
+    @Override
     public String getEstado() throws Exception {
         return "Pedido Pendiente De Pago";
     }
@@ -27,8 +35,6 @@ public class PedidoPendienteDePago extends EstadoPedido {
         finalizarCE(ce);
         PedidoCancelado cancelado = new PedidoCancelado();
         cancelado.setDescripcion("Pedido Cancelado");
-        List<String> estadoPosibles = new ArrayList<>();
-        cancelado.setEstadosPosibles(estadoPosibles);
         CambioEstado cambioEstado = new CambioEstado();
         cambioEstado.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
         cambioEstado.setDescripcion("El pedido fue cancelado por el cliente");
@@ -41,16 +47,6 @@ public class PedidoPendienteDePago extends EstadoPedido {
     }
 
     @Override
-    public Pedido pedidoCreado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("El pedido ya se ecnuentra creado correctamente");
-    }
-
-    // @Override
-    // public Pedido pedidoDespachado(Pedido pedido, List<CambioEstado> ce, String codigoSeguimiento) throws Exception {
-    //     throw new InvalidStateChangeException("No se puede despachar un pedido que todavia no fue preparado");
-    // }
-
-    @Override
     public Pedido pedidoEnPreparacion(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new InvalidStateChangeException("No se puede preparar un pedido que todavia no fue pagado");
     }
@@ -61,49 +57,8 @@ public class PedidoPendienteDePago extends EstadoPedido {
     }
 
     @Override
-    public Pedido pedidoPagado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        finalizarCE(ce);
-        PedidoPagado pagado = new PedidoPagado();
-        pagado.setDescripcion("Pedido Pagado");
-        List<String> estadosPosibles = new ArrayList<>();
-        if(pedido.getTipoEnvio() == TipoEnvio.RETIROENLOCAL && pedido.getPago().getTipoPago() != TipoPago.NAVE){
-            estadosPosibles.add("entregado");
-        }
-        // if (pedido.getTipoEnvio() == TipoEnvio.ENVIOADOMICILIO || pedido.getPago().getTipoPago() == TipoPago.NAVE){
-        //     estadosPosibles.add("enPreparacion");
-        // }
-        estadosPosibles.add("cancelado");
-        pagado.setEstadosPosibles(estadosPosibles);
-        CambioEstado cambioEstado = new CambioEstado();
-        cambioEstado.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
-        cambioEstado.setDescripcion("El pedido ya se encuentra pagado por el cliente a traves del medio especificado");
-        List<CambioEstado> cambiosEstados = pedido.getCambiosEstado();
-        cambiosEstados.add(cambioEstado);
-        pedido.setCambiosEstado(cambiosEstados);
-        cambioEstado.setEstado(pagado);
-        pedido.setEstadoActual(pagado);
-        return pedido;
-    }
-
-    @Override
     public Pedido pedidoPendienteDePago(Pedido pedido, List<CambioEstado> ce) throws Exception {
         throw new InvalidStateChangeException("El pedido se encuentra actualmente pendiente de pago");
-    }
-
-    @Override
-    public Pedido pedidoRechazado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        finalizarCE(ce);
-        PedidoRechazado rechazado = new PedidoRechazado();
-        rechazado.setDescripcion("Pedido Rechazado");
-        CambioEstado cambioEstado = new CambioEstado();
-        cambioEstado.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
-        cambioEstado.setDescripcion("El pedido fue rechazado por el local");
-        List<CambioEstado> cambiosEstados = pedido.getCambiosEstado();
-        cambiosEstados.add(cambioEstado);
-        pedido.setCambiosEstado(cambiosEstados);
-        cambioEstado.setEstado(rechazado);
-        pedido.setEstadoActual(rechazado);
-        return pedido;
     }
 
     @Override
@@ -111,6 +66,9 @@ public class PedidoPendienteDePago extends EstadoPedido {
         throw new InvalidStateChangeException("No se puede finalizar la preparacion de un pedido que todavia no esta siendo preparado");
     }
 
-    
+    @Override 
+    public Pedido pedidoEnCamino(Pedido pedido, List<CambioEstado> ce) throws Exception {
+        throw new InvalidStateChangeException("No se puede enviar un pedido que todavia no fue preparado"); 
+    }
 
 }
