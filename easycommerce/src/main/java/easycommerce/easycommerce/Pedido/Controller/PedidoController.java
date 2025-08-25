@@ -92,21 +92,7 @@ public class PedidoController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/{id}/pagado")
-    public ResponseEntity<PedidoDTOGet> pagado(@PathVariable Long id) throws Exception{
-        Optional<Pedido> pedidoBd = pedidoService.findById(id);
-        if(pedidoBd.isPresent()){
-            Pedido pedidoAGuardar = pedidoBd.get().getEstadoActual().pedidoPagado(pedidoBd.get(), pedidoBd.get().getCambiosEstado());
-            PedidoDTOGet pedidoGuardado = pedidoService.pedidoPagado(pedidoAGuardar);
-            return new ResponseEntity<>(pedidoGuardado,HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        
-    }
-
-    @PutMapping("/{id}/listoParaEntregar")
+    @PutMapping("/{id}/ListoParaEntregar") // Para pasar a "Listo para Entregar"
     public ResponseEntity<PedidoDTOGet> listoParaEntregar(@PathVariable Long id) throws Exception{
         Optional<Pedido> pedidoBd = pedidoService.findById(id);
         if(pedidoBd.isPresent()){
@@ -120,21 +106,7 @@ public class PedidoController {
         
     }
 
-    // @PutMapping("/{id}/despachado")
-    // public ResponseEntity<PedidoDTOGet> despachado(@PathVariable Long id, @RequestBody String codigoSeguimiento) throws Exception{
-    //     Optional<Pedido> pedidoBd = pedidoService.findById(id);
-    //     if(pedidoBd.isPresent()){
-    //         Pedido pedidoAGuardar = pedidoBd.get().getEstadoActual().pedidoDespachado(pedidoBd.get(), pedidoBd.get().getCambiosEstado(), codigoSeguimiento);
-    //         PedidoDTOGet pedidoGuardado = pedidoService.pedidoDespachado(pedidoAGuardar);
-    //         return new ResponseEntity<>(pedidoGuardado,HttpStatus.OK);
-    //     }
-    //     else{
-    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    //     }
-        
-    // }
-
-    @PutMapping("/{id}/entregado")
+    @PutMapping("/{id}/Entregar") // Para pasar a "Entregado"
     public ResponseEntity<PedidoDTOGet> entregado(@PathVariable Long id) throws Exception{
         Optional<Pedido> pedidoBd = pedidoService.findById(id);
         if(pedidoBd.isPresent()){
@@ -148,7 +120,7 @@ public class PedidoController {
         
     }
 
-    @PutMapping("/{id}/cancelado")
+    @PutMapping("/{id}/Cancelar") // Para pasar a "Cancelado"
     public ResponseEntity<PedidoDTOGet> cancelado(@PathVariable Long id) throws Exception{
         Optional<Pedido> pedidoBd = pedidoService.findById(id);
         if(pedidoBd.isPresent()){
@@ -162,7 +134,7 @@ public class PedidoController {
         
     }
     
-    @PutMapping("/{id}/enPreparacion")
+    @PutMapping("/{id}/AceptarPago") // Para pasar a "En Preparacion"
     public ResponseEntity<PedidoDTOGet> enPreparacion(@PathVariable Long id) throws Exception{
         Optional<Pedido> pedidoBd = pedidoService.findById(id);
         if(pedidoBd.isPresent()){
@@ -174,33 +146,6 @@ public class PedidoController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         
-    }
-
-    @PutMapping("/{id}/rechazado")
-    public ResponseEntity<PedidoDTOGet> rechazado(@PathVariable Long id) throws Exception{
-        Optional<Pedido> pedidoBd = pedidoService.findById(id);
-        if(pedidoBd.isPresent()){
-            Pedido pedidoAGuardar = pedidoBd.get().getEstadoActual().pedidoRechazado(pedidoBd.get(), pedidoBd.get().getCambiosEstado());
-            PedidoDTOGet pedidoGuardado = pedidoService.pedidoRechazado(pedidoAGuardar);
-            return new ResponseEntity<>(pedidoGuardado,HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        
-    }
-
-    @PutMapping("/{id}/pendienteDePago")
-    public ResponseEntity<PedidoDTOGet> pendienteDePago(@PathVariable Long id) throws Exception{
-        Optional<Pedido> pedidoBd = pedidoService.findById(id);
-        if(pedidoBd.isPresent()){
-            Pedido pedidoAGuardar = pedidoBd.get().getEstadoActual().pedidoPendienteDePago(pedidoBd.get(), pedidoBd.get().getCambiosEstado());
-            PedidoDTOGet pedidoGuardado = pedidoService.pedidoPendienteDePago(pedidoAGuardar);
-            return new ResponseEntity<>(pedidoGuardado,HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 
     @PostMapping("/estados")
