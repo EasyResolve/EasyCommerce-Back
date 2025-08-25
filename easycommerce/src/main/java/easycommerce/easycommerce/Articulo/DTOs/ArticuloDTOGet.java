@@ -33,7 +33,8 @@ public record ArticuloDTOGet(
     Double peso,
     Double alicuotaIva,
     Marca marca,
-    boolean consultar
+    boolean consultar,
+    boolean destacado
 ) {
 
 }

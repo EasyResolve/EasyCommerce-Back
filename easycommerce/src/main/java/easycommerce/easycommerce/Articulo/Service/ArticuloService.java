@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import easycommerce.easycommerce.Articulo.DTOs.ArticuloDTOActualizacion;
 import easycommerce.easycommerce.Articulo.DTOs.ArticuloDTOGet;
 import easycommerce.easycommerce.Articulo.DTOs.ArticuloDTOPost;
+import easycommerce.easycommerce.Articulo.DTOs.IsDestacado;
 import easycommerce.easycommerce.Articulo.Model.Articulo;
 import easycommerce.easycommerce.Articulo.Model.ArticuloConImagenes;
 import easycommerce.easycommerce.Articulo.Model.ArticuloConImagenesYErrores;
@@ -37,4 +38,5 @@ public interface ArticuloService {
                                            Cliente cliente,
                                            Cotizacion cotizacion, CuponDescuento cupon);
     ArticuloDTOGet setConsultar(Long id, boolean consultar) throws NoSuchElementException, Exception;
+    ArticuloDTOGet setDestacado(Long id, IsDestacado destacado);
 }

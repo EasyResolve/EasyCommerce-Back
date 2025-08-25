@@ -1,6 +1,7 @@
 package easycommerce.easycommerce.Cotizacion.Service;
 
 import java.io.IOException;
+import java.lang.reflect.Parameter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.ZoneId;
@@ -17,13 +18,17 @@ import org.springframework.transaction.annotation.Transactional;
 import easycommerce.easycommerce.Cotizacion.Model.Cotizacion;
 import easycommerce.easycommerce.Cotizacion.Repository.CotizacionRepository;
 import easycommerce.easycommerce.Excepciones.QuotationNotFoundException;
+import easycommerce.easycommerce.Parametros.Model.Parametro;
+import easycommerce.easycommerce.Parametros.Repository.ParametroRepository;
 
 @Service
 public class CotizacionServiceIMPL implements CotizacionService {
     private final CotizacionRepository cotizacionRepository;
+    private final ParametroRepository parametroRepository;
 
-    public CotizacionServiceIMPL(CotizacionRepository cotizacionRepository) {
+    public CotizacionServiceIMPL(CotizacionRepository cotizacionRepository, ParametroRepository parametroRepository) {
         this.cotizacionRepository = cotizacionRepository;
+        this.parametroRepository = parametroRepository;
     }
 
     @Override
@@ -59,10 +64,15 @@ public class CotizacionServiceIMPL implements CotizacionService {
             if(cotizacionGuardada.isPresent()){
                 Cotizacion cotizacionBd = cotizacionGuardada.get();
                 BigDecimal precioCompra = BigDecimal.valueOf(Double.parseDouble(compra.replace(",", ".")));
-                cotizacionBd.setPrecioCompra(precioCompra.setScale(2,RoundingMode.HALF_UP));
                 BigDecimal precioVenta = BigDecimal.valueOf(Double.parseDouble(venta.replace(",", ".")));
-                cotizacionBd.setPrecioVenta(precioVenta.setScale(2,RoundingMode.HALF_UP));
-                cotizacionBd.setFechaUltimaActualizacion(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
+                BigDecimal diferencia = cotizacionBd.getPrecioVenta().subtract(precioVenta).abs();
+                Double porcentajeDiferencia = diferencia.divide(precioVenta).doubleValue();
+                Optional<Parametro> porcentajeVariacionPermitida = parametroRepository.findByDescripcion("PorcentajeVariacionDolar");
+                if(cotizacionBd.getPrecioVenta().compareTo(precioVenta) < 0 && porcentajeDiferencia < Double.parseDouble(porcentajeVariacionPermitida.get().getValor().toString())){
+                    cotizacionBd.setPrecioCompra(precioCompra.setScale(2,RoundingMode.HALF_UP));
+                    cotizacionBd.setPrecioVenta(precioVenta.setScale(2,RoundingMode.HALF_UP));
+                    cotizacionBd.setFechaUltimaActualizacion(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
+                }
                 return cotizacionRepository.save(cotizacionBd);
             }
             else{
