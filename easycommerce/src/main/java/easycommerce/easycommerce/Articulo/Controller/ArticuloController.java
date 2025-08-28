@@ -3,6 +3,7 @@ package easycommerce.easycommerce.Articulo.Controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -147,10 +148,9 @@ public class ArticuloController {
     }
 
     @PutMapping("/cargarImagenes")
-    public ResponseEntity<List<String>> cargarImagenesMasivas(@RequestParam List<MultipartFile> imagenes) throws NoSuchElementException, IOException{
-        ArticuloConImagenesYErrores imagenesAGuardar = articuloService.procesarImagenes(imagenes);
-        List<ArticuloDTOGet> articulosActualizados = articuloService.incorporarImagenes(imagenesAGuardar.imagenes());
-        return new ResponseEntity<>(imagenesAGuardar.errores(), HttpStatus.CREATED);
+    public ResponseEntity<Void> cargarImagenesMasivas(@RequestParam List<MultipartFile> imagenes) throws NoSuchElementException, IOException{
+        articuloService.procesarImagenesAsync(imagenes);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/eliminarImagenes")

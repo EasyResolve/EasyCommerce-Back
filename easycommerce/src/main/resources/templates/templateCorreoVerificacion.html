@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Correo de Verificación</title>
+</head>
+<body style="margin:0; padding:0; background-color:gainsboro;">
+  <!-- Tabla principal 100% ancho/alto -->
+  <table
+    width="100%" height="100%"
+    cellpadding="0" cellspacing="0" border="0"
+    style="background-color:#17243E; margin:0; padding:0;"
+  >
+    <tr>
+      <td align="center" valign="top" style="padding:20px; box-sizing:border-box;">
+        <!-- Logo -->
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/imagenes-a0538.appspot.com/o/logotipo%20full%20color%20para%20fondo%20azul.png?alt=media&token=c89019ef-87dc-4c5b-a24f-7bab44749e1b"
+          alt="logo" width="100" height="60"
+          style="display:block; margin:0 auto 20px; object-fit:contain;"
+        />
+
+        <!-- Contenedor del código -->
+        <table
+          width="100%" cellpadding="0" cellspacing="0" border="0"
+          style="max-width:600px; background-color:#1F3060; border-radius:12px;"
+        >
+          <tr>
+            <td align="center" style="padding:20px;">
+              <!-- Título -->
+              <p style="margin:0; font-family:Arial, sans-serif; font-size:16px; font-weight:bold; color:#FFFFFF;">
+                Código de verificación
+              </p>
+
+              <!-- Casilleros -->
+              <table cellpadding="0" cellspacing="0" border="0" style="margin-top:15px;">
+                <tr>
+                  <td width="50" height="50" align="center" valign="middle" style="background-color:#FFFFFF; border:1px solid gainsboro; border-radius:5px; font-family:Arial, sans-serif; font-size:18px; font-weight:bold; color:#17243E; line-height:50px;">
+                    <span th:text="${codigo[0]}">A</span>
+                  </td>
+                  <td width="8"></td>
+                  <td width="50" height="50" align="center" valign="middle" style="background-color:#FFFFFF; border:1px solid gainsboro; border-radius:5px; font-family:Arial, sans-serif; font-size:18px; font-weight:bold; color:#17243E; line-height:50px;">
+                    <span th:text="${codigo[1]}">B</span>
+                  </td>
+                  <td width="8"></td>
+                  <td width="50" height="50" align="center" valign="middle" style="background-color:#FFFFFF; border:1px solid gainsboro; border-radius:5px; font-family:Arial, sans-serif; font-size:18px; font-weight:bold; color:#17243E; line-height:50px;">
+                    <span th:text="${codigo[2]}">C</span>
+                  </td>
+                  <td width="8"></td>
+                  <td width="50" height="50" align="center" valign="middle" style="background-color:#FFFFFF; border:1px solid gainsboro; border-radius:5px; font-family:Arial, sans-serif; font-size:18px; font-weight:bold; color:#17243E; line-height:50px;">
+                    <span th:text="${codigo[3]}">D</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <!-- Leyenda justo abajo -->
+        <p style="margin:0; font-family:Arial, sans-serif; font-size:16px; font-weight:bold; color:#FFFFFF; text-align:center;">
+          *Recuerde respetar mayúsculas y minúsculas.
+        </p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

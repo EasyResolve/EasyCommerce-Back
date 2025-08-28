@@ -40,4 +40,5 @@ public interface ArticuloService {
     ArticuloDTOGet setConsultar(Long id, boolean consultar) throws NoSuchElementException, Exception;
     ArticuloDTOGet setDestacado(Long id, IsDestacado destacado);
     List<ArticuloDTOGet> findAriticulosSinStock(String username) throws NoSuchElementException, QuotationNotFoundException, IOException;
+    void procesarImagenesAsync(List<MultipartFile> imagenes) throws NoSuchElementException, IOException;
 }

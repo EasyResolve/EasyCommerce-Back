@@ -65,96 +65,12 @@ public class SpringSecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-    @Bean
-    @Order(1)
-    SecurityFilterChain basicAuthFilterChain(HttpSecurity http) throws Exception {
-    return http
-        .securityMatcher("/nave/notificacion") // solo aplica a este endpoint
-        .authorizeHttpRequests(authz -> authz
-            .anyRequest().hasRole("NAVE")
-        )
-        .csrf(csrf -> csrf.disable())
-        .httpBasic(Customizer.withDefaults())
-        .exceptionHandling(exceptionHandling ->
-            exceptionHandling
-                .authenticationEntryPoint(new AuthenticationEntryPoint() {
-                    @Override
-                    public void commence(HttpServletRequest request, HttpServletResponse response,
-                        AuthenticationException authException) throws IOException, ServletException {
-                        response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                        response.setContentType("application/json");
-                        response.getWriter().write("{\"error\": \"No autorizado\"}");
-                    }
-                })
-                .accessDeniedHandler(new AccessDeniedHandler() {
-                    @Override
-                    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
-                        response.setStatus(HttpStatus.FORBIDDEN.value());
-                        response.setContentType("application/json");
-                        response.getWriter().write("{\"error\": \"Acceso denegado\"}");
-                    }
-                })
-        )
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .build();
-    }
     
     @Bean
-    @Order(2)
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         return http
         .authorizeHttpRequests(authRequest -> authRequest
-            .requestMatchers(HttpMethod.GET, "/articulo/**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/articulo/nombre").permitAll()
-            .requestMatchers(HttpMethod.POST, "/articulo/actualizacion").permitAll()
-            .requestMatchers(HttpMethod.POST, "/articulo").access((authentication, context) -> {
-                String ip = context.getRequest().getRemoteAddr();
-                if ("45.231.218.92".equals(ip)) {
-                    return new AuthorizationDecision(true);
-                }
-                return new AuthorizationDecision(false);
-            })
-            .requestMatchers(HttpMethod.POST, "/login").permitAll()
-            .requestMatchers(HttpMethod.POST, "/cliente").permitAll()
-            .requestMatchers(HttpMethod.PUT, "/cliente/**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/codigoVerificacion/validar").permitAll()
-            .requestMatchers(HttpMethod.PUT, "/codigoVerificacion/**").permitAll()
-            .requestMatchers(HttpMethod.GET, "/cuponDescuento/**").permitAll()
-            .requestMatchers(HttpMethod.GET, "/datosTransferencia/**").permitAll()
-            .requestMatchers(HttpMethod.GET, "/tarjetaInformacion/**").permitAll()
-            .requestMatchers(HttpMethod.GET, "/imagenCarrusel/**").permitAll()
-            .requestMatchers(HttpMethod.GET, "/tarjetaRubro/**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/envio/cotizarEnvio/**").permitAll()
-            .requestMatchers(HttpMethod.GET, "/marca/**").permitAll()
-            .requestMatchers(
-                    "/v3/api-docs/**",
-                    "/swagger-ui/**",
-                    "/swagger-ui.html"
-                ).permitAll()
-            .requestMatchers(HttpMethod.POST, "/marca/lista").access((authentication, context) -> {
-                String ip = context.getRequest().getRemoteAddr();
-                if ("45.231.218.92".equals(ip)) {
-                    return new AuthorizationDecision(true);
-                }
-                return new AuthorizationDecision(false);
-            })
-            .requestMatchers("/nave/**").hasRole("NAVE")
-            .requestMatchers(HttpMethod.GET, "/parametro/**").permitAll()
-            .requestMatchers(HttpMethod.GET, "/pedido/**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/pedido/**").permitAll()
-            .requestMatchers(HttpMethod.GET, "/rubro/**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/rubro").access((authentication, context) -> {
-                String ip = context.getRequest().getRemoteAddr();
-                if ("45.231.218.92".equals(ip)) {
-                    return new AuthorizationDecision(true);
-                }
-                return new AuthorizationDecision(false);
-            })
-            .requestMatchers(HttpMethod.GET, "/cotizacionEnvio/**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/usuario/**").permitAll()
-            .requestMatchers(HttpMethod.GET, "/usuario/**").permitAll()
-            .anyRequest().hasRole("ADMINISTRADOR")
+            .anyRequest().permitAll()
             )
         .csrf(configuration -> configuration.disable())
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))

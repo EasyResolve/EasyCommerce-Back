@@ -27,5 +27,7 @@ public record PedidoDTOGet(
     TipoEnvio tipoEnvio,
     EstadoPedido estadoActual,
     List<Envio> envios,
-    CambioEstado cambiosEstado){
+    CambioEstado cambiosEstado,
+    String precioDolar,
+    String listaCliente){
 }

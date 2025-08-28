@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -703,5 +704,12 @@ public class ArticuloServiceIMPL implements ArticuloService{
              cotizacionDolar = cotizacion.get();
         }
         return procesarArticulos(articulos, cliente, cotizacionDolar, null);
+    }
+
+    @Override
+    @Async
+    public void procesarImagenesAsync(List<MultipartFile> imagenes) throws NoSuchElementException, IOException {
+        ArticuloConImagenesYErrores imagenesAGuardar = procesarImagenes(imagenes);
+        incorporarImagenes(imagenesAGuardar.imagenes());
     }
 }

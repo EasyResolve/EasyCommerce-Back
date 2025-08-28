@@ -136,7 +136,7 @@ public class PedidoServiceIMPL implements PedidoService {
             Optional<CambioEstado> ultimoCE = pedido.get().getCambiosEstado().stream()
             .filter(CambioEstado::esActual)
             .findFirst();
-            PedidoDTOGet pedidoDTO = new PedidoDTOGet(pedido.get().getId(), pedido.get().getCliente(), pedido.get().getFechaCreacion(), pedido.get().getDetalles(), pedido.get().calcularTotal(),pedido.get().getEstadoActual().getEstado(),pedido.get().getPago(), pedido.get().getTipoEnvio(), pedido.get().getEstadoActual(), pedido.get().getEnvios(), ultimoCE.get());
+            PedidoDTOGet pedidoDTO = new PedidoDTOGet(pedido.get().getId(), pedido.get().getCliente(), pedido.get().getFechaCreacion(), pedido.get().getDetalles(), pedido.get().calcularTotal(),pedido.get().getEstadoActual().getEstado(),pedido.get().getPago(), pedido.get().getTipoEnvio(), pedido.get().getEstadoActual(), pedido.get().getEnvios(), ultimoCE.get(), pedido.get().getPrecioDolar(), pedido.get().getListaCliente());
             return pedidoDTO;
         }
         else{
@@ -528,7 +528,7 @@ public class PedidoServiceIMPL implements PedidoService {
                 Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
                 .filter(CambioEstado::esActual)
                 .findFirst();
-                PedidoDTOGet pedidoDTO = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get());
+                PedidoDTOGet pedidoDTO = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get(),pedido.getPrecioDolar(), pedido.getListaCliente());
                 pedidosAMostrar.add(pedidoDTO);
             }
             return pedidosAMostrar;
@@ -549,7 +549,7 @@ public class PedidoServiceIMPL implements PedidoService {
         Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
         .filter(CambioEstado::esActual)
         .findFirst();
-        PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get());
+        PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get(), pedido.getPrecioDolar(), pedido.getListaCliente());
         return pedidoAMostrar;
     }
 
@@ -564,7 +564,7 @@ public class PedidoServiceIMPL implements PedidoService {
         Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
         .filter(CambioEstado::esActual)
         .findFirst();
-        PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get());
+        PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get(), pedido.getPrecioDolar(), pedido.getListaCliente());
         return pedidoAMostrar;
     }
 
@@ -579,7 +579,7 @@ public class PedidoServiceIMPL implements PedidoService {
         Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
         .filter(CambioEstado::esActual)
         .findFirst();
-        PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get());
+        PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get(), pedido.getPrecioDolar(), pedido.getListaCliente());
         return pedidoAMostrar;
     }
 
@@ -594,7 +594,7 @@ public class PedidoServiceIMPL implements PedidoService {
         Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
         .filter(CambioEstado::esActual)
         .findFirst();
-        PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get());
+        PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get(), pedido.getPrecioDolar(), pedido.getListaCliente());
         return pedidoAMostrar;
     }
 
@@ -609,7 +609,7 @@ public class PedidoServiceIMPL implements PedidoService {
         Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
         .filter(CambioEstado::esActual)
         .findFirst();
-        PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get());
+        PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get(), pedido.getPrecioDolar(), pedido.getListaCliente());
         return pedidoAMostrar;
     }
 
@@ -624,7 +624,7 @@ public class PedidoServiceIMPL implements PedidoService {
         Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
         .filter(CambioEstado::esActual)
         .findFirst();
-        PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get());
+        PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get(), pedido.getPrecioDolar(), pedido.getListaCliente());
         for (DetallePedido detalles : pedido.getDetalles()) {
             Optional<Articulo> articulo = articuloRepository.findById(detalles.getArticulo().getId());
             if(articulo.isPresent()){
@@ -644,7 +644,7 @@ public class PedidoServiceIMPL implements PedidoService {
         Optional<CambioEstado> ultimoCE = pedidoGuardado.getCambiosEstado().stream()
         .filter(CambioEstado::esActual)
         .findFirst();
-        PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedidoGuardado.getId(), pedidoGuardado.getCliente(), pedidoGuardado.getFechaCreacion(), pedidoGuardado.getDetalles(), pedidoGuardado.calcularTotal(),pedidoGuardado.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get());
+        PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedidoGuardado.getId(), pedidoGuardado.getCliente(), pedidoGuardado.getFechaCreacion(), pedidoGuardado.getDetalles(), pedidoGuardado.calcularTotal(),pedidoGuardado.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get(), pedido.getPrecioDolar(), pedido.getListaCliente());
         return pedidoAMostrar;
     }
 

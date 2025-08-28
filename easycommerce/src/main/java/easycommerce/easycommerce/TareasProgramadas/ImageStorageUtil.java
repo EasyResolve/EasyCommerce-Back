@@ -19,7 +19,7 @@ import io.jsonwebtoken.security.SecurityException;
 public class ImageStorageUtil {
 
     //private static final String BASE_PATH = System.getenv("urlImagenesPath");
-    private static final String BASE_PATH_STRING = "C:\\Users\\Elias\\Desktop\\PruebaImage";
+    private static final String BASE_PATH_STRING = "D:\\LaConchaDeTuMadre";
     private static final Path BASE_PATH = Paths.get(BASE_PATH_STRING);
     
     public static List<String> saveImages(List<MultipartFile> files, String subdirectory) throws IOException {

@@ -69,7 +69,7 @@ public class PedidoController {
             Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
             .filter(CambioEstado::esActual)
             .findFirst();
-            PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(), pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(),pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get());
+            PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(), pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(),pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get(), pedido.getPrecioDolar(), pedido.getListaCliente());
             pedidosAMostrar.add(pedidoAMostrar);
         }
         return new ResponseEntity<>(pedidosAMostrar,HttpStatus.OK);

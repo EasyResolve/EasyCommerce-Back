@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Pedido</title>
+    <style>
+        body {
+            background-color: gainsboro;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .header {
+            width: 100%;
+            height: 100px;
+            background-color: #17243E;
+            display: flex;
+            align-items: center;
+            padding-left: 20px;
+        }
+        .header img {
+            height: 60px;
+        }
+        .content {
+            margin-left: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #17243E;
+            color: white;
+        }
+        .total {
+            font-weight: bold;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabecera con logo -->
+    <div class="header">
+        <img style="margin: 20px; width: auto; height: 60px;" src="https://firebasestorage.googleapis.com/v0/b/imagenes-a0538.appspot.com/o/logotipo%20full%20color%20para%20fondo%20azul.png?alt=media&token=c89019ef-87dc-4c5b-a24f-7bab44749e1b" alt="logo">
+    </div>
+
+    <div class="content">
+        <p style="font-size: medium; letter-spacing: 1.5px;">
+            <strong>Detalle de pedido</strong>
+        </p>
+
+        <!-- Datos del pedido -->
+        <p><strong>ID Pedido:</strong> <span th:text="${pedido.id}"></span></p>
+        <p><strong>Cliente:</strong> <span th:text="${pedido.cliente.razonSocial != null ? pedido.cliente.razonSocial : pedido.cliente.nombre + ' ' + pedido.cliente.apellido}"></span></p>
+        <p><strong>DNI/CUIT Cliente:</strong> <span th:text="${pedido.cliente.documento}"></span></p>
+        <p><strong>Telefono Cliente:</strong> <span th:text="${pedido.cliente.telefono}"></span></p>
+        <p><strong>Condicion IVA Cliente:</strong> <span th:text="${condicionIvaCliente}"></span></p>
+        <p><strong>Dirección de Envío y Facturación:</strong> <span th:text="${pedido.direccion.calle + ' ' + pedido.direccion.numero + ', ' + pedido.direccion.ciudad + ' (' + pedido.direccion.codigoPostal + '), ' + 'Provincia: ' + pedido.direccion.provincia}"></span>
+
+        <!-- Estado actual del pedido -->
+        <p><strong>Estado actual:</strong> <span th:text="${pedido.estadoActual.estado}"></span></p>
+
+        <!-- Si hay datos de transferencia, mostrarlos -->
+        <div th:if="${pedido.pago.datosTransferencia != null and 
+            pedido.pago.datosTransferencia.banco != null and 
+            pedido.pago.datosTransferencia.cbu != null and 
+            pedido.pago.datosTransferencia.alias != null and 
+            pedido.pago.datosTransferencia.titular != null}">
+    		<p><strong>Datos de Transferencia:</strong></p>
+    		<ul>
+        		<li><strong>Banco:</strong> <span th:text="${pedido.pago.datosTransferencia.banco}"></span></li>
+        		<li><strong>CBU:</strong> <span th:text="${pedido.pago.datosTransferencia.cbu}"></span></li>
+        		<li><strong>Alias:</strong> <span th:text="${pedido.pago.datosTransferencia.alias}"></span></li>
+        		<li><strong>Titular:</strong> <span th:text="${pedido.pago.datosTransferencia.titular}"></span></li>
+    		</ul>
+	    </div>
+
+        <div th:if="${pedido.pago.linkDePago != null}">
+    		<p><strong>Datos Pago Nave:</strong> <span th:text="${pedido.pago.linkDePago}"></span></p>
+	    </div>
+
+        <div th:if="${pedido.estadoActual.estado == 'Pedido Despachado'}">
+            <p><strong>Tu pedido ha sido despachado. A continuación los códigos de seguimiento:</strong></p>
+
+            <table border="1" cellspacing="0" cellpadding="6" style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 14px;">
+                <thead>
+                    <tr style="background-color: #f2f2f2;">
+                        <th style="text-align: left;">Envío N°</th>
+                        <th style="text-align: left;">Código de seguimiento</th>
+                    </tr>
+                </thead>
+            <tbody>
+                <tr th:each="envio : ${pedido.envios}" th:if="${envio.codigoSeguimiento != null}">
+                    <td th:text="${envio.id}"></td>
+                    <td th:text="${envio.codigoSeguimiento}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+        <!-- Tabla de detalles del pedido -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Descripcion</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="detalle : ${pedido.detalles}">
+                    <td th:text="${detalle.articulo.id}"></td>
+                    <td th:text="${detalle.articulo.nombre}"></td>
+                    <td th:text="${detalle.cantidad}"></td>
+                    <td th:text="${detalle.precio_unitario}"></td>
+                    <td th:text="${detalle.calcularSubTotal()}"></td>
+                </tr>
+                <!-- Fila para el total general -->
+                <tr>
+                    <td colspan="3" class="total">Total del pedido:</td>
+                    <td class="total" th:text="${pedido.calcularTotal()}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
