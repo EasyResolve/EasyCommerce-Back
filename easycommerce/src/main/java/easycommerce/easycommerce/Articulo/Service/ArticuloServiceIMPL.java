@@ -28,6 +28,7 @@ import easycommerce.easycommerce.CuponDescuento.Model.CuponDescuento;
 import easycommerce.easycommerce.CuponDescuento.Repository.CuponDescuentoRepository;
 import easycommerce.easycommerce.Excepciones.NoSuchElementException;
 import easycommerce.easycommerce.Excepciones.NotFinalPriceException;
+import easycommerce.easycommerce.Excepciones.QuotationNotFoundException;
 import easycommerce.easycommerce.Marca.Model.Marca;
 import easycommerce.easycommerce.Marca.Repository.MarcaRepository;
 import easycommerce.easycommerce.Parametros.Model.ListaPrecioMayorista;
@@ -675,4 +676,32 @@ public class ArticuloServiceIMPL implements ArticuloService{
         return new ArticuloDTOGet(articulo.getId(), articulo.getNombre(), articulo.getDescripcion(), articulo.getRubro(), articulo.getSubRubro(), articulo.getStockActual(), articulo.getPrecioOferta(), articulo.getPreVtaMay1(), articulo.isEsOferta(), articulo.isPrecioDolar(), articulo.getFechaDesdeOferta(), articulo.getFechaHastaOferta(), articulo.isEsNuevo(), articulo.isActivo(), articulo.getPorcentajeOferta(), articulo.getCodigoOrigen(), articulo.getCodigoDeBarra(), articulo.getUrlImagenes(), articulo.getAlto(), articulo.getAncho(), articulo.getLargo(), articulo.getPeso(), articulo.getAlicuotaIva(), articulo.getMarca(), articulo.isConsultar(), articulo.isDestacado());
     }
 
+    @Override
+    public List<ArticuloDTOGet> findAriticulosSinStock(String username) throws NoSuchElementException, QuotationNotFoundException, IOException {
+        Cliente cliente = null;
+        if(username != null){
+            Optional<Usuario> usuario = usuarioRepository.findByUsername(username);
+            if(usuario.isPresent()){
+                cliente = usuario.get().getCliente();
+            }
+            else{
+                throw new NoSuchElementException("No se encuentra un usuario con username: " + username);
+            }
+        }
+        //Creo la lista que contendra los articulos a devolver
+        //List<ArticuloDTOGet> articulosAMostrar = new ArrayList<>(); AFUERRAAAAAAAAAAAAA
+        //Recupero de la base de datos todos los articulos que tienen stock > 0
+        List<Articulo> articulos = articuloRepository.findArticulosSinStock();
+        //Busco en la base de datos si existe alguna cotizacion del dolar guardada
+        Optional<Cotizacion> cotizacion = cotizacionService.findByMoneda("USD");
+        //Si existe la cotizacion recorro todos los articulos y paso el precio de dolares a pesos
+        Cotizacion cotizacionDolar = null;
+        if(!cotizacion.isPresent()){
+             cotizacionDolar = cotizacionService.obtenerCotizacion("USD");
+        }
+        else{
+             cotizacionDolar = cotizacion.get();
+        }
+        return procesarArticulos(articulos, cliente, cotizacionDolar, null);
+    }
 }

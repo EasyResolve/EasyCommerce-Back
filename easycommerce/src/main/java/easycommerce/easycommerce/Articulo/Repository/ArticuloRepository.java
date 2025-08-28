@@ -31,4 +31,7 @@ public interface ArticuloRepository extends JpaRepository<Articulo,Long> {
 
     @Query("SELECT i FROM Articulo a JOIN a.urlImagenes i WHERE i LIKE CONCAT('%', :nombreImagen) ESCAPE '\\'")
     Optional<String> buscarRutaPorNombreImagen(@Param("nombreImagen") String nombreImagen);
+
+    @Query("SELECT a FROM Articulo a WHERE a.stockActual = 0")
+    List<Articulo> findArticulosSinStock();
 }

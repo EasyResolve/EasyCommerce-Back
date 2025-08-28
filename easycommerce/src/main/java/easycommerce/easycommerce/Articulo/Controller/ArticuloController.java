@@ -56,6 +56,17 @@ public class ArticuloController {
         return new ResponseEntity<>(articulos,HttpStatus.OK);
     }
 
+    @GetMapping("/sinStock")
+    public ResponseEntity<List<ArticuloDTOGet>> getArticuloSinStock() throws Exception{
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = null;
+        if (authentication != null && authentication.isAuthenticated() && authentication.getName() != "anonymousUser") {
+            username = authentication.getName();
+        }
+        List<ArticuloDTOGet> articulos = articuloService.findAriticulosSinStock(username);
+        return new ResponseEntity<>(articulos,HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ArticuloDTOGet> getArticulo(@PathVariable Long id) throws Exception{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
