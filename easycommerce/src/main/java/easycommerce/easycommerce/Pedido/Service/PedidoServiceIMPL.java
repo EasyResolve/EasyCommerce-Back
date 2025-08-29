@@ -3,6 +3,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.io.IOException;
+import java.lang.classfile.ClassFile.Option;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -122,6 +123,7 @@ public class PedidoServiceIMPL implements PedidoService {
             Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
             .filter(CambioEstado::esActual)
             .findFirst();
+            pedido.getEstadoActual().getEstadosPosibles();
             PedidoDTOGetADMIN pedidoDTO = new PedidoDTOGetADMIN(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(), pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), ultimoCE.get(), pedido.getPrecioDolar(), pedido.getListaCliente());
             pedidosAMostrar.add(pedidoDTO);
         }
@@ -136,6 +138,7 @@ public class PedidoServiceIMPL implements PedidoService {
             Optional<CambioEstado> ultimoCE = pedido.get().getCambiosEstado().stream()
             .filter(CambioEstado::esActual)
             .findFirst();
+            pedido.get().getEstadoActual().getEstadosPosibles();
             PedidoDTOGet pedidoDTO = new PedidoDTOGet(pedido.get().getId(), pedido.get().getCliente(), pedido.get().getFechaCreacion(), pedido.get().getDetalles(), pedido.get().calcularTotal(),pedido.get().getEstadoActual().getEstado(),pedido.get().getPago(), pedido.get().getTipoEnvio(), pedido.get().getEstadoActual(), pedido.get().getEnvios(), ultimoCE.get(), pedido.get().getPrecioDolar(), pedido.get().getListaCliente());
             return pedidoDTO;
         }
@@ -528,6 +531,7 @@ public class PedidoServiceIMPL implements PedidoService {
                 Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
                 .filter(CambioEstado::esActual)
                 .findFirst();
+                pedido.getEstadoActual().getEstadosPosibles();
                 PedidoDTOGet pedidoDTO = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(), pedido.getDetalles(), pedido.calcularTotal(),pedido.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get(),pedido.getPrecioDolar(), pedido.getListaCliente());
                 pedidosAMostrar.add(pedidoDTO);
             }
@@ -678,6 +682,8 @@ public class PedidoServiceIMPL implements PedidoService {
 
     @Override
     public Optional<Pedido> findById(Long id) {
-        return pedidoRepository.findById(id);
+        Optional<Pedido> pedido = pedidoRepository.findById(id);
+        pedido.get().getEstadoActual().getEstadosPosibles();
+        return pedido;
     }
 }
