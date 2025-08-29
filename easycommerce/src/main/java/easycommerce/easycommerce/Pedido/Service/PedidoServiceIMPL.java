@@ -622,6 +622,7 @@ public class PedidoServiceIMPL implements PedidoService {
         Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
                 .filter(CambioEstado::esActual)
                 .findFirst();
+        pedido.getEstadoActual().obtenerEstadosPosibles(pedido.getPago().getTipoPago(), pedido.getTipoEnvio());
         PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(),
                 pedido.getDetalles(), pedido.calcularTotal(), pedido.getEstadoActual().getEstado(), pedido.getPago(),
                 pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get(),
@@ -640,6 +641,7 @@ public class PedidoServiceIMPL implements PedidoService {
         Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
                 .filter(CambioEstado::esActual)
                 .findFirst();
+        pedido.getEstadoActual().obtenerEstadosPosibles(pedido.getPago().getTipoPago(), pedido.getTipoEnvio());
         PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(),
                 pedido.getDetalles(), pedido.calcularTotal(), pedido.getEstadoActual().getEstado(), pedido.getPago(),
                 pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get(),
@@ -658,6 +660,7 @@ public class PedidoServiceIMPL implements PedidoService {
         Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
                 .filter(CambioEstado::esActual)
                 .findFirst();
+        pedido.getEstadoActual().obtenerEstadosPosibles(pedido.getPago().getTipoPago(), pedido.getTipoEnvio());
         PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(),
                 pedido.getDetalles(), pedido.calcularTotal(), pedido.getEstadoActual().getEstado(), pedido.getPago(),
                 pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get(),
@@ -676,6 +679,7 @@ public class PedidoServiceIMPL implements PedidoService {
         Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
                 .filter(CambioEstado::esActual)
                 .findFirst();
+        pedido.getEstadoActual().obtenerEstadosPosibles(pedido.getPago().getTipoPago(), pedido.getTipoEnvio());
         PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(),
                 pedido.getDetalles(), pedido.calcularTotal(), pedido.getEstadoActual().getEstado(), pedido.getPago(),
                 pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get(),
@@ -694,6 +698,7 @@ public class PedidoServiceIMPL implements PedidoService {
         Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
                 .filter(CambioEstado::esActual)
                 .findFirst();
+        pedido.getEstadoActual().obtenerEstadosPosibles(pedido.getPago().getTipoPago(), pedido.getTipoEnvio());
         PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(),
                 pedido.getDetalles(), pedido.calcularTotal(), pedido.getEstadoActual().getEstado(), pedido.getPago(),
                 pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get(),
@@ -712,6 +717,7 @@ public class PedidoServiceIMPL implements PedidoService {
         Optional<CambioEstado> ultimoCE = pedido.getCambiosEstado().stream()
                 .filter(CambioEstado::esActual)
                 .findFirst();
+        pedido.getEstadoActual().obtenerEstadosPosibles(pedido.getPago().getTipoPago(), pedido.getTipoEnvio());
         PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedido.getId(), pedido.getCliente(), pedido.getFechaCreacion(),
                 pedido.getDetalles(), pedido.calcularTotal(), pedido.getEstadoActual().getEstado(), pedido.getPago(),
                 pedido.getTipoEnvio(), pedido.getEstadoActual(), pedido.getEnvios(), ultimoCE.get(),
@@ -735,6 +741,7 @@ public class PedidoServiceIMPL implements PedidoService {
         Optional<CambioEstado> ultimoCE = pedidoGuardado.getCambiosEstado().stream()
                 .filter(CambioEstado::esActual)
                 .findFirst();
+        pedido.getEstadoActual().obtenerEstadosPosibles(pedido.getPago().getTipoPago(), pedido.getTipoEnvio());
         PedidoDTOGet pedidoAMostrar = new PedidoDTOGet(pedidoGuardado.getId(), pedidoGuardado.getCliente(),
                 pedidoGuardado.getFechaCreacion(), pedidoGuardado.getDetalles(), pedidoGuardado.calcularTotal(),
                 pedidoGuardado.getEstadoActual().getEstado(), pedido.getPago(), pedido.getTipoEnvio(),
