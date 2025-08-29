@@ -25,7 +25,7 @@ public class ImagenCarruselServiceIMPL implements ImagenCarruselService {
 
     @Override
     public List<ImagenCarrusel> findAll() {
-        return imagenCarruselRepository.findAll();
+        return imagenCarruselRepository.findAllOrdenadas();
     }
 
     @Override
@@ -51,6 +51,10 @@ public class ImagenCarruselServiceIMPL implements ImagenCarruselService {
 
         if(imagenCarrusel.imagenCarrusel().getRedireccionar() != null){
             imagenNueva.setRedireccionar(imagenCarrusel.imagenCarrusel().getRedireccionar());
+        }
+
+        if(imagenCarrusel.imagenCarrusel().getOrden() != 0){
+            imagenNueva.setOrden(imagenCarrusel.imagenCarrusel().getOrden());
         }
 
         imagenNueva = imagenCarruselRepository.save(imagenNueva);

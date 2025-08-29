@@ -53,16 +53,16 @@ public class TarjetaInformacionController {
     }
 
     @PostMapping
-    public ResponseEntity<TarjetaInformacion> saveTarjetaInformacion(@RequestParam String texto, @RequestParam(required = false) String icono, @RequestParam(required = false) MultipartFile file) throws NoSuchElementException, IOException{
-        TarjetaInformacion tarjeta = TarjetaInformacion.builder().icono(icono).texto(texto).build();
+    public ResponseEntity<TarjetaInformacion> saveTarjetaInformacion(@RequestParam String texto, @RequestParam(required = false) String icono, @RequestParam(required = false) MultipartFile file, @RequestParam int orden) throws NoSuchElementException, IOException{
+        TarjetaInformacion tarjeta = TarjetaInformacion.builder().icono(icono).texto(texto).orden(orden).build();
         TarjetaInformacionDTOPost tarjetaAGuardar = new TarjetaInformacionDTOPost(tarjeta, file);
         TarjetaInformacion tarjetaGuardada = tarjetaInformacionService.save(tarjetaAGuardar);  
         return new ResponseEntity<>(tarjetaGuardada,HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TarjetaInformacion> updateTarjetaInformacion(@PathVariable Long id, @RequestParam String texto, @RequestParam(required = false) String icono, @RequestParam(required = false) MultipartFile file) throws NoSuchElementException, IOException{
-        TarjetaInformacion tarjeta = TarjetaInformacion.builder().id(id).icono(icono).texto(texto).build();
+    public ResponseEntity<TarjetaInformacion> updateTarjetaInformacion(@PathVariable Long id, @RequestParam String texto, @RequestParam(required = false) String icono, @RequestParam(required = false) MultipartFile file, @RequestParam(required = false) int orden) throws NoSuchElementException, IOException{
+        TarjetaInformacion tarjeta = TarjetaInformacion.builder().id(id).icono(icono).texto(texto).orden(orden).build();
         TarjetaInformacionDTOPost tarjetaAGuardar = new TarjetaInformacionDTOPost(tarjeta, file);
         TarjetaInformacion tarjetaGuardada = tarjetaInformacionService.save(tarjetaAGuardar);
         return new ResponseEntity<>(tarjetaGuardada,HttpStatus.CREATED);

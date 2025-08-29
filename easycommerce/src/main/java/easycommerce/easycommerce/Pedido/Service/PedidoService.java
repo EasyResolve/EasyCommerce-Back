@@ -12,6 +12,7 @@ import easycommerce.easycommerce.Pedido.DTOs.EstadosGetDTO;
 import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOGet;
 import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOGetADMIN;
 import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOPost;
+import easycommerce.easycommerce.Pedido.DTOs.PedidosDTOGestionPlus;
 import easycommerce.easycommerce.Pedido.Model.Pedido;
 import easycommerce.easycommerce.Pedido.Model.PedidoConPago;
 import jakarta.mail.MessagingException;
@@ -32,4 +33,5 @@ public interface PedidoService {
     PedidoDTOGet saveCambioEstado(Pedido pedido) throws Exception;
     List<Pedido> findByFiltro(LocalDate fechaInicio, LocalDate fechaFin, String estado, String documento);
     Optional<Pedido> findById(Long id);
+    List<PedidosDTOGestionPlus> exportarPedidosGestionPlus();
 }

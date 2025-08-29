@@ -50,16 +50,16 @@ public class ImagenCarruselController {
     }
 
     @PostMapping
-    public ResponseEntity<ImagenCarrusel> saveImagenCarrusel(@RequestParam String nombre, @RequestParam String redireccionar, @RequestParam MultipartFile file) throws NoSuchElementException, IOException{
-        ImagenCarrusel imagen = ImagenCarrusel.builder().nombre(nombre).redireccionar(redireccionar).build();
+    public ResponseEntity<ImagenCarrusel> saveImagenCarrusel(@RequestParam String nombre, @RequestParam String redireccionar, @RequestParam MultipartFile file, @RequestParam int orden) throws NoSuchElementException, IOException{
+        ImagenCarrusel imagen = ImagenCarrusel.builder().nombre(nombre).redireccionar(redireccionar).orden(orden).build();
         ImagenCarruselDTOPost datosImagen = new ImagenCarruselDTOPost(imagen, file);
         ImagenCarrusel imagenGuardada = imagenCarruselService.save(datosImagen);
         return new ResponseEntity<>(imagenGuardada,HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ImagenCarrusel> updateImagenCarrusel(@PathVariable Long id, @RequestParam String nombre, @RequestParam String redireccionar, @RequestParam(required = false) String url , @RequestParam(required = false) MultipartFile file) throws NoSuchElementException, IOException{
-        ImagenCarrusel imagenCarrusel = ImagenCarrusel.builder().id(id).nombre(nombre).redireccionar(redireccionar).url(url).build();
+    public ResponseEntity<ImagenCarrusel> updateImagenCarrusel(@PathVariable Long id, @RequestParam String nombre, @RequestParam String redireccionar, @RequestParam(required = false) String url , @RequestParam(required = false) MultipartFile file, @RequestParam(required = false) int orden) throws NoSuchElementException, IOException{
+        ImagenCarrusel imagenCarrusel = ImagenCarrusel.builder().id(id).nombre(nombre).redireccionar(redireccionar).url(url).orden(orden).build();
         ImagenCarruselDTOPost datosImagen = new ImagenCarruselDTOPost(imagenCarrusel, file);
         ImagenCarrusel imagenGuardada = imagenCarruselService.save(datosImagen);
         return new ResponseEntity<>(imagenGuardada, HttpStatus.CREATED);

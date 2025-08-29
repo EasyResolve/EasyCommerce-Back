@@ -25,7 +25,7 @@ public class TarjetaInformacionServiceIMPL implements TarjetaInformacionService 
 
     @Override
     public List<TarjetaInformacion> findAll() {
-        return tarjetaInformacionRepository.findAll();
+        return tarjetaInformacionRepository.findAllOrdenadas();
     }
 
     @Override
@@ -50,6 +50,11 @@ public class TarjetaInformacionServiceIMPL implements TarjetaInformacionService 
             if(tarjetaInformacion.informacion().getTexto() != null){
                 tarjetaNueva.setTexto(tarjetaInformacion.informacion().getTexto());
             }
+
+            if(tarjetaInformacion.informacion().getOrden() != 0){
+                tarjetaNueva.setOrden(tarjetaInformacion.informacion().getOrden());
+            }
+            
             tarjetaNueva = tarjetaInformacionRepository.save(tarjetaNueva);
 
             if(tarjetaInformacion.file() != null){

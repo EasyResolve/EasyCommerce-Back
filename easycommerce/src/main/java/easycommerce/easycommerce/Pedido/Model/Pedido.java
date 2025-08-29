@@ -70,6 +70,7 @@ public class Pedido {
     private List<Envio> envios;
     private String precioDolar;
     private String listaCliente;
+    private boolean fueExportado;
     
     public BigDecimal calcularTotal(){
         BigDecimal total = new BigDecimal(0.0);

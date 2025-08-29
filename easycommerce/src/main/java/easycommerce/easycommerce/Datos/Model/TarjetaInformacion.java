@@ -24,4 +24,5 @@ public class TarjetaInformacion {
     private Long id;
     private String icono;
     private String texto;
+    private int orden;
 }

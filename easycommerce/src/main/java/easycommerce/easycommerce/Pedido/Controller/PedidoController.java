@@ -26,6 +26,7 @@ import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOFiltro;
 import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOGet;
 import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOGetADMIN;
 import easycommerce.easycommerce.Pedido.DTOs.PedidoDTOPost;
+import easycommerce.easycommerce.Pedido.DTOs.PedidosDTOGestionPlus;
 import easycommerce.easycommerce.Pedido.Model.Pedido;
 import easycommerce.easycommerce.Pedido.Model.PedidoConPago;
 import easycommerce.easycommerce.Pedido.Service.PedidoService;
@@ -164,6 +165,12 @@ public class PedidoController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         
+    }
+
+    @GetMapping("/exportarAGestionPlus")
+    public ResponseEntity<List<PedidosDTOGestionPlus>> exportarPedidosAGestionPlus() throws Exception{
+        List<PedidosDTOGestionPlus> pedidosExportados = pedidoService.exportarPedidosGestionPlus();
+        return new ResponseEntity<>(pedidosExportados,HttpStatus.OK);
     }
 
 }

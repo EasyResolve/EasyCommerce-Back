@@ -25,4 +25,5 @@ public class ImagenCarrusel {
     private String nombre;
     private String url;
     private String redireccionar;
+    private int orden;
 }
