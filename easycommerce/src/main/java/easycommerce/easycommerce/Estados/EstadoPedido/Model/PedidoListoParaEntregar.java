@@ -18,10 +18,9 @@ import jakarta.persistence.Entity;
 public class PedidoListoParaEntregar extends EstadoPedido {
 
     @Override
-    public void obtenerEstadosPosibles() throws Exception{
+    public void obtenerEstadosPosibles(TipoPago tipoPago, TipoEnvio tipoEnvio) throws Exception{
         List<String> estadosPosibles = new ArrayList<>();
         estadosPosibles.add("Entregar");
-        estadosPosibles.add("Cancelar");
         setEstadosPosibles(estadosPosibles);
     }
 
@@ -32,18 +31,19 @@ public class PedidoListoParaEntregar extends EstadoPedido {
 
     @Override
     public Pedido pedidoCancelado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        finalizarCE(ce);
-        PedidoCancelado cancelado = new PedidoCancelado();
-        cancelado.setDescripcion("Pedido Cancelado");
-        CambioEstado cambioEstado = new CambioEstado();
-        cambioEstado.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
-        cambioEstado.setDescripcion("El pedido fue cancelado por el cliente");
-        List<CambioEstado> cambiosEstados = pedido.getCambiosEstado();
-        cambiosEstados.add(cambioEstado);
-        pedido.setCambiosEstado(cambiosEstados);
-        cambioEstado.setEstado(cancelado);
-        pedido.setEstadoActual(cancelado);
-        return pedido;
+        // finalizarCE(ce);
+        // PedidoCancelado cancelado = new PedidoCancelado();
+        // cancelado.setDescripcion("Pedido Cancelado");
+        // CambioEstado cambioEstado = new CambioEstado();
+        // cambioEstado.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
+        // cambioEstado.setDescripcion("El pedido fue cancelado por el cliente");
+        // List<CambioEstado> cambiosEstados = pedido.getCambiosEstado();
+        // cambiosEstados.add(cambioEstado);
+        // pedido.setCambiosEstado(cambiosEstados);
+        // cambioEstado.setEstado(cancelado);
+        // pedido.setEstadoActual(cancelado);
+        // return pedido;
+        throw new InvalidStateChangeException("No se puede cancelar un pedido que ya está listo para entregar");
     }
 
     @Override
@@ -80,25 +80,7 @@ public class PedidoListoParaEntregar extends EstadoPedido {
 
     @Override
     public Pedido pedidoPendienteDePago(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        if(pedido.getTipoEnvio() == TipoEnvio.RETIROENLOCAL && (pedido.getPago().getTipoPago() == TipoPago.EFECTIVO)){
-            finalizarCE(ce);
-            PedidoPendienteDePago pendienteDePago = new PedidoPendienteDePago();
-            pendienteDePago.setDescripcion("Pedido Pendiente De Pago");
-            CambioEstado cambioEstado = new CambioEstado();
-            cambioEstado.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
-            String descripcion = "Lo esperamos en el local para abonar y retirar su pedido";
-            cambioEstado.setDescripcion(descripcion);
-            List<CambioEstado> cambiosEstados = pedido.getCambiosEstado();
-            cambiosEstados.add(cambioEstado);
-            pedido.setCambiosEstado(cambiosEstados);
-            cambioEstado.setEstado(pendienteDePago);
-            pedido.setEstadoActual(pendienteDePago);
-            return pedido;
-        }
-        else{
-            throw new InvalidStateChangeException("Si no se selecciona retiro en el local nunca deberias llegar a este punto");
-        }
-        
+        throw new InvalidStateChangeException("El pedido ya se ha aceptado");
     }
 
     @Override

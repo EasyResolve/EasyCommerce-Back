@@ -149,6 +149,20 @@ public class PedidoController {
         
     }
 
+    @PutMapping("/{id}/AceptarPedido") // Para pasar a "En Preparacion"
+    public ResponseEntity<PedidoDTOGet> enPreparacionEfectivo(@PathVariable Long id) throws Exception{
+        Optional<Pedido> pedidoBd = pedidoService.findById(id);
+        if(pedidoBd.isPresent()){
+            Pedido pedidoAGuardar = pedidoBd.get().getEstadoActual().pedidoEnPreparacion(pedidoBd.get(), pedidoBd.get().getCambiosEstado());
+            PedidoDTOGet pedidoGuardado = pedidoService.pedidoEnPreparacion(pedidoAGuardar);
+            return new ResponseEntity<>(pedidoGuardado,HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        
+    }
+
     @PostMapping("/estados")
     public ResponseEntity<List<CambioEstado>> getEstados(@RequestBody EstadosGetDTO datos) throws Exception{
         List<EstadoDTOGet> estados = new ArrayList<>();

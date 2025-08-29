@@ -731,9 +731,11 @@ public class PedidoServiceIMPL implements PedidoService {
     }
 
     @Override
-    public Optional<Pedido> findById(Long id) {
+    public Optional<Pedido> findById(Long id) throws Exception {
         Optional<Pedido> pedido = pedidoRepository.findById(id);
-        pedido.get().getEstadoActual().getEstadosPosibles();
+        TipoPago tipoPago = pedido.get().getPago().getTipoPago();
+        TipoEnvio tipoEnvio = pedido.get().getTipoEnvio();
+        pedido.get().getEstadoActual().obtenerEstadosPosibles(tipoPago, tipoEnvio);
         return pedido;
     }
 

@@ -8,7 +8,9 @@ import java.util.List;
 
 import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
 import easycommerce.easycommerce.Pago.Model.Pago;
+import easycommerce.easycommerce.Pago.Model.TipoPago;
 import easycommerce.easycommerce.Pedido.Model.Pedido;
+import easycommerce.easycommerce.Pedido.Model.TipoEnvio;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -88,7 +90,7 @@ public class Estado {
         throw new Exception();
     }
 
-    public void obtenerEstadosPosibles() throws Exception {
+    public void obtenerEstadosPosibles(TipoPago tipoPago, TipoEnvio tipoEnvio) throws Exception {
         throw new Exception();
     }
 

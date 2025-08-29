@@ -18,9 +18,13 @@ import jakarta.persistence.Entity;
 public class PedidoPendienteDePago extends EstadoPedido {
 
     @Override
-    public void obtenerEstadosPosibles() throws Exception{
+    public void obtenerEstadosPosibles(TipoPago tipoPago, TipoEnvio tipoEnvio) throws Exception{
         List<String> estadosPosibles = new ArrayList<>();
-        estadosPosibles.add("AceptarPago");
+        if(tipoPago == TipoPago.EFECTIVO){
+            estadosPosibles.add("AceptarPedido");
+        } else{
+            estadosPosibles.add("AceptarPago");
+        }
         estadosPosibles.add("Cancelar");
         setEstadosPosibles(estadosPosibles);
     }
@@ -48,7 +52,18 @@ public class PedidoPendienteDePago extends EstadoPedido {
 
     @Override
     public Pedido pedidoEnPreparacion(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("No se puede preparar un pedido que todavia no fue pagado");
+        finalizarCE(ce);
+        PedidoEnPreparacion enPreparacion = new PedidoEnPreparacion();
+        enPreparacion.setDescripcion("Pedido En Preparacion");
+        CambioEstado cambioEstado = new CambioEstado();
+        cambioEstado.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
+        cambioEstado.setDescripcion("El pedido esta siendo preparado");
+        List<CambioEstado> cambiosEstados = pedido.getCambiosEstado();
+        cambiosEstados.add(cambioEstado);
+        pedido.setCambiosEstado(cambiosEstados);
+        cambioEstado.setEstado(enPreparacion);
+        pedido.setEstadoActual(enPreparacion);
+        return pedido;
     }
 
     @Override

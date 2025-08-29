@@ -5,10 +5,8 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import easycommerce.easycommerce.Envio.Model.Envio;
 import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
 import easycommerce.easycommerce.Excepciones.InvalidStateChangeException;
-import easycommerce.easycommerce.Excepciones.NoSuchElementException;
 import easycommerce.easycommerce.Pago.Model.TipoPago;
 import easycommerce.easycommerce.Pedido.Model.Pedido;
 import easycommerce.easycommerce.Pedido.Model.TipoEnvio;
@@ -20,10 +18,13 @@ import jakarta.persistence.Entity;
 public class PedidoEnPreparacion extends EstadoPedido {
 
     @Override
-    public void obtenerEstadosPosibles() throws Exception {
+    public void obtenerEstadosPosibles(TipoPago tipoPago, TipoEnvio tipoEnvio) throws Exception {
         List<String> estadosPosibles = new ArrayList<>();
-        estadosPosibles.add("ListoParaEntregar");
-        estadosPosibles.add("ListoParaRetirar");
+        if(tipoEnvio == TipoEnvio.ENVIOADOMICILIO){
+            estadosPosibles.add("EnCamino");
+        } else {
+            estadosPosibles.add("ListoParaEntregar");
+        }
         estadosPosibles.add("Cancelar");
         setEstadosPosibles(estadosPosibles);
     }

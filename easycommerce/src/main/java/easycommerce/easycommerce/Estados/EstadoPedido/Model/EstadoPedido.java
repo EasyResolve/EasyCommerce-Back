@@ -6,7 +6,9 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import easycommerce.easycommerce.Estados.Estado.Model.Estado;
+import easycommerce.easycommerce.Pago.Model.TipoPago;
 import easycommerce.easycommerce.Pedido.Model.Pedido;
+import easycommerce.easycommerce.Pedido.Model.TipoEnvio;
 import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
@@ -33,10 +35,9 @@ public class EstadoPedido extends Estado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private boolean fueExportado;
 
     @Override
-    public void obtenerEstadosPosibles() throws Exception{
+    public void obtenerEstadosPosibles(TipoPago tipoPago, TipoEnvio tipoEnvio) throws Exception{
         throw new Exception();
     }
 

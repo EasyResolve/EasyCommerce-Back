@@ -32,6 +32,6 @@ public interface PedidoService {
     PedidoDTOGet pedidoCancelado(Pedido pedido) throws MessagingException, NoSuchElementException, Exception;
     PedidoDTOGet saveCambioEstado(Pedido pedido) throws Exception;
     List<Pedido> findByFiltro(LocalDate fechaInicio, LocalDate fechaFin, String estado, String documento);
-    Optional<Pedido> findById(Long id);
+    Optional<Pedido> findById (Long id) throws Exception;
     List<PedidosDTOGestionPlus> exportarPedidosGestionPlus();
 }

@@ -7,7 +7,9 @@ import java.util.List;
 
 import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
 import easycommerce.easycommerce.Excepciones.InvalidStateChangeException;
+import easycommerce.easycommerce.Pago.Model.TipoPago;
 import easycommerce.easycommerce.Pedido.Model.Pedido;
+import easycommerce.easycommerce.Pedido.Model.TipoEnvio;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -16,9 +18,8 @@ import jakarta.persistence.Entity;
 public class PedidoEnCamino extends EstadoPedido {
 
     @Override
-    public void obtenerEstadosPosibles() {
+    public void obtenerEstadosPosibles(TipoPago tipoPago, TipoEnvio tipoEnvio){
         List<String> estadosPosibles = new ArrayList<>();
-        estadosPosibles.add("Cancelar");
         estadosPosibles.add("Entregar");
         setEstadosPosibles(estadosPosibles);
     }
@@ -30,18 +31,19 @@ public class PedidoEnCamino extends EstadoPedido {
 
     @Override
     public Pedido pedidoCancelado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        finalizarCE(ce);
-        PedidoCancelado cancelado = new PedidoCancelado();
-        cancelado.setDescripcion("Pedido Cancelado");
-        CambioEstado cambioEstado = new CambioEstado();
-        cambioEstado.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
-        cambioEstado.setDescripcion("El pedido fue cancelado por el cliente");
-        List<CambioEstado> cambiosEstados = pedido.getCambiosEstado();
-        cambiosEstados.add(cambioEstado);
-        pedido.setCambiosEstado(cambiosEstados);
-        cambioEstado.setEstado(cancelado);
-        pedido.setEstadoActual(cancelado);
-        return pedido;
+        // finalizarCE(ce);
+        // PedidoCancelado cancelado = new PedidoCancelado();
+        // cancelado.setDescripcion("Pedido Cancelado");
+        // CambioEstado cambioEstado = new CambioEstado();
+        // cambioEstado.setFechaInicio(ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
+        // cambioEstado.setDescripcion("El pedido fue cancelado por el cliente");
+        // List<CambioEstado> cambiosEstados = pedido.getCambiosEstado();
+        // cambiosEstados.add(cambioEstado);
+        // pedido.setCambiosEstado(cambiosEstados);
+        // cambioEstado.setEstado(cancelado);
+        // pedido.setEstadoActual(cancelado);
+        // return pedido;
+        throw new InvalidStateChangeException("No se puede cancelar un pedido que ya se encuentra en camino");
     }
 
     @Override

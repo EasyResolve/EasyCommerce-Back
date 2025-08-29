@@ -19,17 +19,17 @@ public class PedidoEntregado extends EstadoPedido {
 
     @Override
     public Pedido pedidoCancelado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("No se puede cancelar un pedido entregado");
+        throw new InvalidStateChangeException("El pedido ya se encuentra entregado");
     }
 
     @Override
     public Pedido pedidoEnPreparacion(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("No se puede preparar un pedido que ya se encuentra entregado");
+        throw new InvalidStateChangeException("El pedido ya se encuentra entregado");
     }
 
     @Override
     public Pedido pedidoEntregado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("El pedido ya se encuentra entregado correctamente");
+        throw new InvalidStateChangeException("El pedido ya se encuentra entregado");
     }
 
     @Override
@@ -39,7 +39,7 @@ public class PedidoEntregado extends EstadoPedido {
 
     @Override
     public Pedido pedidoPendienteDePago(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        throw new InvalidStateChangeException("El pedido ya se encuentra pagado y entregado");
+        throw new InvalidStateChangeException("El pedido ya se encuentra entregado");
     }
 
     @Override
