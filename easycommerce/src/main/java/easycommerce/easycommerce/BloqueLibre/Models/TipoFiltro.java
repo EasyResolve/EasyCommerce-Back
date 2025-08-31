@@ -5,5 +5,7 @@ public enum TipoFiltro {
     Rubro,
     Codigo,
     Texto,
-    Destacado
+    Destacado,
+    Oferta,
+    Consulta
 }

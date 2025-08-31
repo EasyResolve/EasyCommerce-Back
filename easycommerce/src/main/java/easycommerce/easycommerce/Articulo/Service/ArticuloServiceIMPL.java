@@ -1,5 +1,6 @@
 package easycommerce.easycommerce.Articulo.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -30,6 +31,8 @@ import easycommerce.easycommerce.CuponDescuento.Repository.CuponDescuentoReposit
 import easycommerce.easycommerce.Excepciones.NoSuchElementException;
 import easycommerce.easycommerce.Excepciones.NotFinalPriceException;
 import easycommerce.easycommerce.Excepciones.QuotationNotFoundException;
+import easycommerce.easycommerce.ImagenePorArticulo.Models.ImagenesPorArticulo;
+import easycommerce.easycommerce.ImagenePorArticulo.Repository.ImagenesPorArticuloRepository;
 import easycommerce.easycommerce.Marca.Model.Marca;
 import easycommerce.easycommerce.Marca.Repository.MarcaRepository;
 import easycommerce.easycommerce.Parametros.Model.ListaPrecioMayorista;
@@ -58,11 +61,13 @@ public class ArticuloServiceIMPL implements ArticuloService{
     private final UsuarioRepository usuarioRepository;
     private final ParametroRepository parametroRepository;
     private final CuponDescuentoRepository cuponDescuentoRepository;
+    private final ImagenesPorArticuloRepository imagenesPorArticuloRepository;
 
     public ArticuloServiceIMPL(ArticuloRepository articuloRepository, RubroRepository rubroRepository,
             CotizacionService cotizacionService, SubRubroRepository subRubroRepository, MarcaRepository marcaRepository,
             UsuarioRepository usuarioRepository, ParametroRepository parametroRepository,
-            CuponDescuentoRepository cuponDescuentoRepository) {
+            CuponDescuentoRepository cuponDescuentoRepository,
+            ImagenesPorArticuloRepository imagenesPorArticuloRepository) {
         this.articuloRepository = articuloRepository;
         this.rubroRepository = rubroRepository;
         this.cotizacionService = cotizacionService;
@@ -71,6 +76,7 @@ public class ArticuloServiceIMPL implements ArticuloService{
         this.usuarioRepository = usuarioRepository;
         this.parametroRepository = parametroRepository;
         this.cuponDescuentoRepository = cuponDescuentoRepository;
+        this.imagenesPorArticuloRepository = imagenesPorArticuloRepository;
     }
 
     @Override
@@ -138,6 +144,7 @@ public class ArticuloServiceIMPL implements ArticuloService{
     public List<Articulo> save(List<ArticuloDTOPost> articulos) throws NoSuchElementException, NotFinalPriceException, IOException {
         //Creo la lista de articulos que se van a guardar
         List<Articulo> articulosAGuardar = new ArrayList<>();
+        List<ImagenesPorArticulo> imagenes = new ArrayList<>();
         //Recorro todos los articulos que vienen en el json
         for (ArticuloDTOPost articuloDTOPost : articulos) {
             if(articuloDTOPost.PrecioFinal() == 0){
@@ -263,6 +270,7 @@ public class ArticuloServiceIMPL implements ArticuloService{
                 articuloAGuardar.setAncho(articuloDTOPost.Medidas_ancho());
                 articuloAGuardar.setLargo(articuloDTOPost.Medidas_largo());
                 articuloAGuardar.setPeso(articuloDTOPost.peso());
+                articuloAGuardar = articuloRepository.save(articuloAGuardar);
                 articulosAGuardar.add(articuloAGuardar);
             }
             else{
@@ -369,11 +377,19 @@ public class ArticuloServiceIMPL implements ArticuloService{
                 articuloAGuardar.setAncho(articuloDTOPost.Medidas_ancho());
                 articuloAGuardar.setLargo(articuloDTOPost.Medidas_largo());
                 articuloAGuardar.setPeso(articuloDTOPost.peso());
+                articuloAGuardar = articuloRepository.save(articuloAGuardar);
+
+                ImagenesPorArticulo imagenSistema = new ImagenesPorArticulo();
+                imagenSistema.setArticulo(articuloAGuardar);
+                String path = articuloDTOPost.fotos();
+                String fileName = new File(path).getName();
+                imagenSistema.setNombreImagen(fileName);
+                imagenesPorArticuloRepository.save(imagenSistema);
                 articulosAGuardar.add(articuloAGuardar);
             }     
         }
         ImageStorageUtil.saveArticulosJson(articulos, "logs/articulos");
-        return articuloRepository.saveAll(articulosAGuardar);
+        return articulosAGuardar;
     }
 
     @Override
@@ -516,12 +532,23 @@ public class ArticuloServiceIMPL implements ArticuloService{
         for (MultipartFile file : imagenes) {
             String fileName = file.getOriginalFilename();
             if(fileName != null){
-                Matcher matcher = Pattern.compile("^(\\d+)").matcher(fileName);
-                if(!matcher.find()){
-                    errores.add(fileName);
-                    continue;
+                Long idArticulo = Long.valueOf(0);
+                Optional<ImagenesPorArticulo> imagenSistema = imagenesPorArticuloRepository.findByDescripcion(fileName);
+                if(imagenSistema.isPresent()){
+                    idArticulo = imagenSistema.get().getArticulo().getId();
+                    imagenesPorArticuloRepository.deleteById(imagenSistema.get().getId());
                 }
-                Long idArticulo = Long.parseLong(matcher.group(1));
+                else{
+                    Pattern pattern = Pattern.compile("^(\\d+)(\\(\\d+\\))?\\.[a-zA-Z0-9]+$");
+                    Matcher matcher = pattern.matcher(fileName);
+                    if(matcher.find()){
+                        idArticulo = Long.parseLong(matcher.group(1));
+                    }
+                    else{
+                        errores.add(fileName);
+                        continue;
+                    }
+                }
                 Optional<Articulo> articuloBd = articuloRepository.findById(idArticulo);
                 if(articuloBd.isPresent()){
                     ArticuloConImagenes producto = buscarProducto(imagenesAGuardar, idArticulo);
@@ -674,6 +701,7 @@ public class ArticuloServiceIMPL implements ArticuloService{
         if(articuloBd.isPresent()){
             articulo.setDestacado(destacado.isDestacado());
         }
+        articuloRepository.save(articulo);
         return new ArticuloDTOGet(articulo.getId(), articulo.getNombre(), articulo.getDescripcion(), articulo.getRubro(), articulo.getSubRubro(), articulo.getStockActual(), articulo.getPrecioOferta(), articulo.getPreVtaMay1(), articulo.isEsOferta(), articulo.isPrecioDolar(), articulo.getFechaDesdeOferta(), articulo.getFechaHastaOferta(), articulo.isEsNuevo(), articulo.isActivo(), articulo.getPorcentajeOferta(), articulo.getCodigoOrigen(), articulo.getCodigoDeBarra(), articulo.getUrlImagenes(), articulo.getAlto(), articulo.getAncho(), articulo.getLargo(), articulo.getPeso(), articulo.getAlicuotaIva(), articulo.getMarca(), articulo.isConsultar(), articulo.isDestacado());
     }
 
