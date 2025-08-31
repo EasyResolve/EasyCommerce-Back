@@ -378,13 +378,14 @@ public class ArticuloServiceIMPL implements ArticuloService{
                 articuloAGuardar.setLargo(articuloDTOPost.Medidas_largo());
                 articuloAGuardar.setPeso(articuloDTOPost.peso());
                 articuloAGuardar = articuloRepository.save(articuloAGuardar);
-
-                ImagenesPorArticulo imagenSistema = new ImagenesPorArticulo();
-                imagenSistema.setArticulo(articuloAGuardar);
-                String path = articuloDTOPost.fotos();
-                String fileName = new File(path).getName();
-                imagenSistema.setNombreImagen(fileName);
-                imagenesPorArticuloRepository.save(imagenSistema);
+                if(articuloDTOPost.fotos() != null  && !articuloDTOPost.fotos().isEmpty()){
+                    ImagenesPorArticulo imagenSistema = new ImagenesPorArticulo();
+                    imagenSistema.setArticulo(articuloAGuardar);
+                    String path = articuloDTOPost.fotos();
+                    String fileName = new File(path).getName();
+                    imagenSistema.setNombreImagen(fileName);
+                    imagenesPorArticuloRepository.save(imagenSistema);
+                }
                 articulosAGuardar.add(articuloAGuardar);
             }     
         }
