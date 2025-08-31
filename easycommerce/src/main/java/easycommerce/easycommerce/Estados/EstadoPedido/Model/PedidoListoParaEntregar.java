@@ -53,7 +53,7 @@ public class PedidoListoParaEntregar extends EstadoPedido {
 
     @Override
     public Pedido pedidoEntregado(Pedido pedido, List<CambioEstado> ce) throws Exception {
-        if(pedido.getTipoEnvio() == TipoEnvio.RETIROENLOCAL && (pedido.getPago().getTipoPago() == TipoPago.NAVE || pedido.getPago().getTipoPago() == TipoPago.TRANSFERENCIA)){
+        if(pedido.getTipoEnvio() == TipoEnvio.RETIROENLOCAL){
             finalizarCE(ce);
             PedidoEntregado entregado = new PedidoEntregado();
             entregado.setDescripcion("Pedido Entregado");
@@ -68,7 +68,7 @@ public class PedidoListoParaEntregar extends EstadoPedido {
             return pedido;
         }
         else{
-            throw new InvalidStateChangeException("No se puede entregar un pedido cuyo pago no fue efectuado");
+            throw new InvalidStateChangeException("El pedido fue seleccionado para retiro en local, por lo que no puede ser entregado si el tipo de envío es a domicilio");
         }
         
     }
