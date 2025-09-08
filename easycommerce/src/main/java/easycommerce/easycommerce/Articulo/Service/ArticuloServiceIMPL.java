@@ -266,10 +266,10 @@ public class ArticuloServiceIMPL implements ArticuloService{
                         articuloAGuardar.setMarca(sinMarcaGuardado);
                     }
                 }
-                articuloAGuardar.setAlto(articuloDTOPost.Medidas_alto());
-                articuloAGuardar.setAncho(articuloDTOPost.Medidas_ancho());
-                articuloAGuardar.setLargo(articuloDTOPost.Medidas_largo());
-                articuloAGuardar.setPeso(articuloDTOPost.peso());
+                //articuloAGuardar.setAlto(articuloDTOPost.Medidas_alto());
+                //articuloAGuardar.setAncho(articuloDTOPost.Medidas_ancho());
+                //articuloAGuardar.setLargo(articuloDTOPost.Medidas_largo());
+                //articuloAGuardar.setPeso(articuloDTOPost.peso());
                 articuloAGuardar = articuloRepository.save(articuloAGuardar);
                 articulosAGuardar.add(articuloAGuardar);
             }
@@ -373,10 +373,10 @@ public class ArticuloServiceIMPL implements ArticuloService{
 
                 List<String> fotos = new ArrayList<>();
                 articuloAGuardar.setUrlImagenes(fotos);
-                articuloAGuardar.setAlto(articuloDTOPost.Medidas_alto());
-                articuloAGuardar.setAncho(articuloDTOPost.Medidas_ancho());
-                articuloAGuardar.setLargo(articuloDTOPost.Medidas_largo());
-                articuloAGuardar.setPeso(articuloDTOPost.peso());
+                //articuloAGuardar.setAlto(articuloDTOPost.Medidas_alto());
+                //articuloAGuardar.setAncho(articuloDTOPost.Medidas_ancho());
+                //articuloAGuardar.setLargo(articuloDTOPost.Medidas_largo());
+                //articuloAGuardar.setPeso(articuloDTOPost.peso());
                 articuloAGuardar = articuloRepository.save(articuloAGuardar);
                 if(articuloDTOPost.fotos() != null  && !articuloDTOPost.fotos().isEmpty()){
                     ImagenesPorArticulo imagenSistema = new ImagenesPorArticulo();
