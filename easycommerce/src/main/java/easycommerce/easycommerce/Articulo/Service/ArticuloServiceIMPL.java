@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate.Param;
+
 import easycommerce.easycommerce.Articulo.DTOs.ArticuloDTOActualizacion;
 import easycommerce.easycommerce.Articulo.DTOs.ArticuloDTOGet;
 import easycommerce.easycommerce.Articulo.Model.Articulo;
@@ -29,7 +31,6 @@ import easycommerce.easycommerce.Cotizacion.Service.CotizacionService;
 import easycommerce.easycommerce.CuponDescuento.Model.CuponDescuento;
 import easycommerce.easycommerce.CuponDescuento.Repository.CuponDescuentoRepository;
 import easycommerce.easycommerce.Excepciones.NoSuchElementException;
-import easycommerce.easycommerce.Excepciones.NotFinalPriceException;
 import easycommerce.easycommerce.Excepciones.QuotationNotFoundException;
 import easycommerce.easycommerce.ImagenePorArticulo.Models.ImagenesPorArticulo;
 import easycommerce.easycommerce.ImagenePorArticulo.Repository.ImagenesPorArticuloRepository;
@@ -37,6 +38,7 @@ import easycommerce.easycommerce.Marca.Model.Marca;
 import easycommerce.easycommerce.Marca.Repository.MarcaRepository;
 import easycommerce.easycommerce.Parametros.Model.ListaPrecioMayorista;
 import easycommerce.easycommerce.Parametros.Model.ListaPrecioMinorista;
+import easycommerce.easycommerce.Parametros.Model.Parametro;
 import easycommerce.easycommerce.Parametros.Repository.ParametroRepository;
 import easycommerce.easycommerce.Rubro.Model.Rubro;
 import easycommerce.easycommerce.Rubro.Repository.RubroRepository;
@@ -141,7 +143,14 @@ public class ArticuloServiceIMPL implements ArticuloService{
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<Articulo> save(List<ArticuloDTOPost> articulos) throws NoSuchElementException, NotFinalPriceException, IOException {
+    public List<Articulo> save(List<ArticuloDTOPost> articulos) throws Exception {
+        Optional<Parametro> parametroBd = parametroRepository.findByDescripcion("SubirArticulos");
+        if(!parametroBd.isPresent()){
+            throw new NoSuchElementException("No se encontro el parametro especificado");
+        }
+        if(parametroBd.get().getValor().equals("false")){
+            throw new Exception("No se puede guardar los articulos porque no tiene permiso");
+        }
         //Creo la lista de articulos que se van a guardar
         List<Articulo> articulosAGuardar = new ArrayList<>();
         List<ImagenesPorArticulo> imagenes = new ArrayList<>();
@@ -390,6 +399,8 @@ public class ArticuloServiceIMPL implements ArticuloService{
             }     
         }
         ImageStorageUtil.saveArticulosJson(articulos, "logs/articulos");
+        parametroBd.get().setValor("false");
+        parametroRepository.save(parametroBd.get());
         return articulosAGuardar;
     }
 

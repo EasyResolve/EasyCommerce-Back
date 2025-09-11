@@ -3,6 +3,7 @@ package easycommerce.easycommerce.Marca.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -11,15 +12,19 @@ import org.springframework.web.multipart.MultipartFile;
 import easycommerce.easycommerce.Marca.DTOs.MarcaDTOPost;
 import easycommerce.easycommerce.Marca.Model.Marca;
 import easycommerce.easycommerce.Marca.Repository.MarcaRepository;
+import easycommerce.easycommerce.Parametros.Model.Parametro;
+import easycommerce.easycommerce.Parametros.Repository.ParametroRepository;
 import easycommerce.easycommerce.TareasProgramadas.ImageStorageUtil;
 
 @Service
 public class MarcaServiceIMPL implements MarcaService {
 
     private final MarcaRepository marcaRepository;
+    private final ParametroRepository parametroRepository;
 
-    public MarcaServiceIMPL(MarcaRepository marcaRepository) {
+    public MarcaServiceIMPL(MarcaRepository marcaRepository, ParametroRepository parametroRepository) {
         this.marcaRepository = marcaRepository;
+        this.parametroRepository = parametroRepository;
     }
 
     @Override
@@ -33,7 +38,14 @@ public class MarcaServiceIMPL implements MarcaService {
     }
 
     @Override
-    public List<Marca> saveLista(List<Marca> marcas) {
+    public List<Marca> saveLista(List<Marca> marcas) throws Exception {
+        Optional<Parametro> parametroBd = parametroRepository.findByDescripcion("SubirMarcas");
+        if(!parametroBd.isPresent()){
+            throw new NoSuchElementException("No se encontro el parametro especificado");
+        }
+        if(parametroBd.get().getValor().equals("false")){
+            throw new Exception("No se pudieron subir las marcas porque no tiene permisos");
+        }
         for (Marca marca : marcas) {
             Optional<Marca> marcaBd = marcaRepository.findById(marca.getCodigo());
             if(marcaBd.isPresent()){
@@ -43,6 +55,8 @@ public class MarcaServiceIMPL implements MarcaService {
                 marca.setMostrar(false);
             }    
         }
+        parametroBd.get().setValor("false");
+        parametroRepository.save(parametroBd.get());
         return marcaRepository.saveAll(marcas);
     }
 

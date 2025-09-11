@@ -61,9 +61,9 @@ public class CuponDescuentoController {
         return new ResponseEntity<>(cupon, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{codigo}")
-    public ResponseEntity<CuponDescuentoDTOGet> updateCuponDescuento(@RequestBody CuponDescuento cuponDescuento, @PathVariable String codigo){
-        Optional<CuponDescuento> cuponBd = cuponDescuentoService.findByCodigo(codigo);
+    @PutMapping("/{id}")
+    public ResponseEntity<CuponDescuentoDTOGet> updateCuponDescuento(@RequestBody CuponDescuento cuponDescuento, @PathVariable Long id){
+        Optional<CuponDescuento> cuponBd = cuponDescuentoService.findById(id);
         if(cuponBd.isPresent()){
             CuponDescuento cupon = cuponBd.get();
             if(cuponDescuento.getCantidad() != null){
@@ -75,7 +75,13 @@ public class CuponDescuentoController {
             if(cuponDescuento.getFechaHasta() != null){
                 cupon.setFechaHasta(cuponDescuento.getFechaHasta());
             }
-            CuponDescuentoDTOGet cuponGuardado = cuponDescuentoService.save(cuponDescuento);
+            if(cuponDescuento.getMontoMaximoDeDescuento() != null){
+                cupon.setMontoMaximoDeDescuento(cuponDescuento.getMontoMaximoDeDescuento());
+            }
+            if(cuponDescuento.getPorcentajeDescuento() != null){
+                cupon.setPorcentajeDescuento(cuponDescuento.getPorcentajeDescuento());
+            }
+            CuponDescuentoDTOGet cuponGuardado = cuponDescuentoService.save(cupon);
             return new ResponseEntity<>(cuponGuardado, HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

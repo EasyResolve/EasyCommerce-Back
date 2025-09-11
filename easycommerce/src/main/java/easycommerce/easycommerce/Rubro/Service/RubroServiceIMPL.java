@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import easycommerce.easycommerce.Articulo.Repository.ArticuloRepository;
+import easycommerce.easycommerce.Parametros.Model.Parametro;
+import easycommerce.easycommerce.Parametros.Repository.ParametroRepository;
 import easycommerce.easycommerce.Rubro.DTOs.RubroDTOPost;
 import easycommerce.easycommerce.Rubro.DTOs.RubroDTOPut;
 import easycommerce.easycommerce.Rubro.Model.Rubro;
@@ -29,12 +32,14 @@ public class RubroServiceIMPL implements RubroService {
     private final RubroRepository rubroRepository;
     private final SubRubroRepository subRubroRepository;
     private final ArticuloRepository articuloRepository;
+    private final ParametroRepository parametroRepository;
 
     public RubroServiceIMPL(RubroRepository rubroRepository, SubRubroRepository subRubroRepository,
-            ArticuloRepository articuloRepository) {
+            ArticuloRepository articuloRepository, ParametroRepository parametroRepository) {
         this.rubroRepository = rubroRepository;
         this.subRubroRepository = subRubroRepository;
         this.articuloRepository = articuloRepository;
+        this.parametroRepository = parametroRepository;
     }
 
     @Override
@@ -64,7 +69,14 @@ public class RubroServiceIMPL implements RubroService {
     }
 
     @Override
-    public List<Rubro> saveList(List<RubroDTOPost> rubros) {
+    public List<Rubro> saveList(List<RubroDTOPost> rubros) throws Exception {
+        Optional<Parametro> parametroBd = parametroRepository.findByDescripcion("SubirRubros");
+        if(!parametroBd.isPresent()){
+            throw new NoSuchElementException("No se encontro el parametro especificado");
+        }
+        if(parametroBd.get().getValor().equals("false")){
+            throw new Exception("No se pudieron subir rubros ya que no tiene permisos");
+        }
         //Creo un hash map para poner los prefijos de los rubros que creo
         Map<String,Rubro> rubrosAGuardar = new HashMap<>();
         //Ordeno los rubros que me llegan para guardar por numeros de menor a mayor
@@ -133,6 +145,8 @@ public class RubroServiceIMPL implements RubroService {
         //Una vez que recorro todo hago una lista con los objetos que se encuentran en el hashmap de acuerdo a su prefijo o valor
         List<Rubro> rubrosConSubRubros = new ArrayList<>(rubrosAGuardar.values());
         //Guardo los rubros con sus respectivos sub rubros
+        parametroBd.get().setValor("false");
+        parametroRepository.save(parametroBd.get());
         return rubroRepository.saveAll(rubrosConSubRubros);
         
     }

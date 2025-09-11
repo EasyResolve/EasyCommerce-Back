@@ -51,7 +51,7 @@ public class MarcaController {
     }
 
     @PostMapping("/lista")
-    public ResponseEntity<List<Marca>> saveMarcas(@RequestBody List<Marca> marcas){
+    public ResponseEntity<List<Marca>> saveMarcas(@RequestBody List<Marca> marcas) throws Exception{
         List<Marca> marcasGuardadas = marcaService.saveLista(marcas);
         return new ResponseEntity<>(marcasGuardadas,HttpStatus.CREATED);
     }

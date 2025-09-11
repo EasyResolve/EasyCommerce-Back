@@ -63,7 +63,7 @@ public class RubroController {
     }
 
     @PostMapping
-    public ResponseEntity<List<Rubro>> saveRubros(@Valid @RequestBody List<RubroDTOPost> rubros){
+    public ResponseEntity<List<Rubro>> saveRubros(@Valid @RequestBody List<RubroDTOPost> rubros) throws Exception{
         List<Rubro> rubrosGuardados = rubroService.saveList(rubros);
         return new ResponseEntity<>(rubrosGuardados,HttpStatus.CREATED);
     }

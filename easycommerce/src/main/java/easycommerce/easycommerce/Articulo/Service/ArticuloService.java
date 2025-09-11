@@ -26,7 +26,7 @@ import easycommerce.easycommerce.Excepciones.QuotationNotFoundException;
 public interface ArticuloService {
     List<ArticuloDTOGet> findAll(String username) throws QuotationNotFoundException, IOException, NoSuchElementException, Exception;
     Optional<ArticuloDTOGet> findById(Long id, String username) throws Exception;
-    List<Articulo> save(List<ArticuloDTOPost> articulos) throws NoSuchElementException, NotFinalPriceException, IOException;
+    List<Articulo> save(List<ArticuloDTOPost> articulos) throws NoSuchElementException, NotFinalPriceException, IOException, Exception;
     void delete(Long id);
     //List<ArticuloDTOGet> findByRubro(Long id, String username) throws NoSuchElementException, QuotationNotFoundException, IOException, Exception;
     List<ArticuloDTOGet> actualizarPrecioArticulos(ArticuloDTOActualizacion articulos, String username) throws NoSuchElementException, QuotationNotFoundException, IOException, Exception;

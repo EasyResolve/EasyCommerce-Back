@@ -42,9 +42,6 @@ public class DataInicializer implements CommandLineRunner {
         this.cotizacionEnvioRepository = cotizacionEnvioRepository;
     }
 
-
-
-
     @Override
     public void run(String... args) throws Exception {
         if(rolRepository.count() == 0){
@@ -66,66 +63,30 @@ public class DataInicializer implements CommandLineRunner {
 
             Parametro montoEnvioGratisGeneral = Parametro.builder().descripcion("montoEnvioGratisGeneral").valor("250000").build();
             Parametro montoEnvioZona = Parametro.builder().descripcion("montoEnvioZonas").valor("15000").build();
+            Parametro subirArticulos = Parametro.builder().descripcion("SubirArticulos").valor("false").build();
+            Parametro subirMarcas = Parametro.builder().descripcion("SubirMarcas").valor("false").build();
+            Parametro subirRubros = Parametro.builder().descripcion("SubirRubros").valor("false").build();
 
-            parametroRepository.saveAll(List.of(listaPrecioMayorista,listaPrecioMinorista,montoEnvioGratisGeneral,montoEnvioZona));
+            parametroRepository.saveAll(List.of(listaPrecioMayorista,listaPrecioMinorista,montoEnvioGratisGeneral,montoEnvioZona,subirArticulos, subirMarcas, subirRubros));
             System.out.println("Parámetros creados");
         }
 
         if(usuarioRepository.count() == 0){
             Usuario usuario = new Usuario();
-            usuario.setUsername("gnratto@gnr.ar");
-            usuario.setPassword("$2a$12$P5pFU1kzFKYBifNhxUsewui2WJWrqXB71XEJyA7pddJCWQ25kDiwC");
+            usuario.setUsername("administrador@la27ferreteria.com.ar");
+            usuario.setPassword("$2a$12$7fHP9QDWWjk4exG385Icver5O6cBAsCPD6acIWxRRh04vdJQ0/mEe");
             Optional<Rol> rol = rolRepository.findByDescripcion("ROLE_ADMINISTRADOR");
             if(rol.isPresent()){
                 usuario.setRol(rol.get());
             }
             usuario.setValidado(true);
 
-            Usuario usuario2 = new Usuario();
-            usuario2.setUsername("navePasarelaProd");
-            usuario2.setPassword("$2a$12$739TFOt7QynkI1npHQoV2.3wqa1MhvpFB7dX//fkArIlfLuOzCGSq");
-            Optional<Rol> rol2 = rolRepository.findByDescripcion("ROLE_NAVE");
-            if(rol.isPresent()){
-                usuario2.setRol(rol2.get());
-            }
-            usuario2.setValidado(true);
-            usuarioRepository.saveAll(List.of(usuario,usuario2));
+            usuarioRepository.saveAll(List.of(usuario));
         }
 
         if(cotizacionRepository.count() == 0){
             cotizacionService.obtenerCotizacion("USD");
             System.out.println("Cotizacion Dolar Cargada");
         }
-
-        if(cotizacionEnvioRepository.count() == 0){
-            CotizacionEnvio cotizacion1 = new CotizacionEnvio();
-            cotizacion1.setPesoDesde(0.0);
-            cotizacion1.setPesoHasta(1000.00);
-            cotizacion1.setMontoEnvio(BigDecimal.valueOf(14000));
-            CotizacionEnvio cotizacion2 = new CotizacionEnvio();
-            cotizacion2.setPesoDesde(1000.00);
-            cotizacion2.setPesoHasta(5000.00);
-            cotizacion2.setMontoEnvio(BigDecimal.valueOf(16400));
-            CotizacionEnvio cotizacion3 = new CotizacionEnvio();
-            cotizacion3.setPesoDesde(5000.00);
-            cotizacion3.setPesoHasta(10000.00);
-            cotizacion3.setMontoEnvio(BigDecimal.valueOf(22000.00));
-            CotizacionEnvio cotizacion4 = new CotizacionEnvio();
-            cotizacion4.setPesoDesde(10.000);
-            cotizacion4.setPesoHasta(15000.00);
-            cotizacion4.setMontoEnvio(BigDecimal.valueOf(27300));
-            CotizacionEnvio cotizacion5 = new CotizacionEnvio();
-            cotizacion5.setPesoDesde(15000.00);
-            cotizacion5.setPesoHasta(20000.00);
-            cotizacion5.setMontoEnvio(BigDecimal.valueOf(32100.00));
-            CotizacionEnvio cotizacion6 = new CotizacionEnvio();
-            cotizacion6.setPesoDesde(20.000);
-            cotizacion6.setPesoHasta(25000.00);
-            cotizacion6.setMontoEnvio(BigDecimal.valueOf(38600));
-            cotizacionEnvioRepository.saveAll(List.of(cotizacion1, cotizacion2, cotizacion3, cotizacion4, cotizacion5, cotizacion6));
-            System.out.println("Cotizaciones De Envios Por Peso Cargadas");
-        }
-    }
-
-    
+    }  
 }

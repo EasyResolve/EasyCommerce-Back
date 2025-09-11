@@ -10,7 +10,7 @@ import easycommerce.easycommerce.Marca.Model.Marca;
 public interface MarcaService {
     List<Marca> findAll();
     Optional<Marca> findByCodigo(Long codigo);
-    List<Marca> saveLista(List<Marca> marcas);
+    List<Marca> saveLista(List<Marca> marcas) throws Exception;
     void delete(Long codigo) throws IOException;
     Marca saveMarca(MarcaDTOPost marca) throws IOException;
 }

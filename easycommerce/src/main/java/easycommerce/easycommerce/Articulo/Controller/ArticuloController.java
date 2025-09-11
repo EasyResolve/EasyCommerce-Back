@@ -30,7 +30,6 @@ import easycommerce.easycommerce.Articulo.Model.Articulo;
 import easycommerce.easycommerce.Articulo.Model.ArticuloConImagenesYErrores;
 import easycommerce.easycommerce.Articulo.Service.ArticuloService;
 import easycommerce.easycommerce.Excepciones.NoSuchElementException;
-import easycommerce.easycommerce.Excepciones.NotFinalPriceException;
 
 
 
@@ -125,7 +124,7 @@ public class ArticuloController {
     }
 
     @PostMapping
-    public ResponseEntity<List<Articulo>> saveArticulos(@RequestBody List<ArticuloDTOPost> articulos) throws NoSuchElementException, NotFinalPriceException, IOException{
+    public ResponseEntity<List<Articulo>> saveArticulos(@RequestBody List<ArticuloDTOPost> articulos) throws Exception{
         List<Articulo> articulosGuardados = articuloService.save(articulos);
         return new ResponseEntity<>(articulosGuardados,HttpStatus.CREATED);
     }
