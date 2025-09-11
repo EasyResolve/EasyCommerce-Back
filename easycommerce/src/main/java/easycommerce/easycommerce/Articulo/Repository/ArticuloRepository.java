@@ -17,7 +17,7 @@ public interface ArticuloRepository extends JpaRepository<Articulo,Long> {
     @Query("SELECT a FROM Articulo a WHERE a.rubro.id = :rubroId")
     List<Articulo> findArticulosByRubroId(@Param("rubroId") Long rubroId);
 
-    @Query("SELECT a FROM Articulo a WHERE a.stockActual > 0")
+    @Query("SELECT a FROM Articulo a WHERE a.stockActual > 0 AND a.activo = true")
     List<Articulo> findArticulosByCantidad();
 
     @Query("SELECT a FROM Articulo a WHERE a.nombre = :nombre")

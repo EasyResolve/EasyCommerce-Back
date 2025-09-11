@@ -1,16 +1,25 @@
 package easycommerce.easycommerce.Estados.EstadoPedido.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
 import easycommerce.easycommerce.Excepciones.InvalidStateChangeException;
+import easycommerce.easycommerce.Pago.Model.TipoPago;
 import easycommerce.easycommerce.Pedido.Model.Pedido;
+import easycommerce.easycommerce.Pedido.Model.TipoEnvio;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("PedidoEntregado")
 public class PedidoEntregado extends EstadoPedido {
+
+    @Override
+    public void obtenerEstadosPosibles(TipoPago tipoPago, TipoEnvio tipoEnvio) throws Exception {
+        List<String> estadosPosibles = new ArrayList<>();
+        setEstadosPosibles(estadosPosibles);
+    }
 
     @Override
     public String getEstado() throws Exception {

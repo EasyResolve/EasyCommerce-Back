@@ -1,9 +1,12 @@
 package easycommerce.easycommerce.Estados.EstadoPedido.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import easycommerce.easycommerce.Excepciones.InvalidStateChangeException;
+import easycommerce.easycommerce.Pago.Model.TipoPago;
 import easycommerce.easycommerce.Pedido.Model.Pedido;
+import easycommerce.easycommerce.Pedido.Model.TipoEnvio;
 import easycommerce.easycommerce.Estados.CambioEstado.Model.CambioEstado;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -15,6 +18,12 @@ public class PedidoCancelado extends EstadoPedido {
     @Override
     public String getEstado() throws Exception {
         return "Pedido Cancelado";
+    }
+
+    @Override
+    public void obtenerEstadosPosibles(TipoPago tipoPago, TipoEnvio tipoEnvio) throws Exception {
+        List<String> estadosPosibles = new ArrayList<>();
+        setEstadosPosibles(estadosPosibles);
     }
 
     @Override

@@ -76,7 +76,7 @@ public class CorreoService {
         Optional<Pedido> pedidoBd = pedidoRepository.findById(idPedido);
         if(pedidoBd.isPresent()){
             Pedido pedido = pedidoBd.get();
-            String email = "administracion@gnrcomputacion.com.ar";
+            String email = "";
             String asunto = "Pedido N° " + pedido.getId() + " " + "GNR Computación";
 
             List<CambioEstado> ce = pedido.getCambiosEstado();
@@ -141,7 +141,7 @@ public class CorreoService {
     }
 
     public void enviarMailRegistroCorrecto(String emailCliente) throws NoSuchElementException, MessagingException, UserAlreadyVerifiedException{
-        String email = "administracion@gnrcomputacion.com.ar";
+        String email = "";
         String asunto = "Cliente Registrado Exitosamente";
 
         MimeMessage mensaje = javaMailSender.createMimeMessage();
